@@ -34,3 +34,22 @@ class Solution(object):
             else:
                 right=mid
         return left if nums[left]>nums[right] else right
+
+# 388
+def lengthLongestPath(self, input):
+    maxlen = 0
+    path = []
+    for line in input.splitlines():
+        path[line.count('\t'):] = [line.lstrip('\t')]
+        if '.' in line:
+            maxlen = max(maxlen, sum(map(len, path)) + len(path) - 1)
+    return maxlen
+
+# 228 Summary Ranges
+def summaryRanges(self, nums):
+    ranges = []
+    for n in nums:
+        if not ranges or n > ranges[-1][-1] + 1:
+            ranges += [],
+        ranges[-1][1:] = n,
+    return ['->'.join(map(str, r)) for r in ranges]
