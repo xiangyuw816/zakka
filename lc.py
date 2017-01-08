@@ -132,3 +132,19 @@ class Solution(object):
                 low += 1
             ret = max(i - low + 1, ret)
         return ret
+
+# 415. add strings
+# use izip_longest to tuples: respective digits
+# c: larger than 10 --> carry
+from itertools import izip_longest
+class Solution(object):
+    def addStrings(self, num1, num2):
+        res, c = "", 0
+        for (x, y) in izip_longest(num1[::-1], num2[::-1], fillvalue='0'):
+            s = (int(x) + int(y) + c)
+            d, c = s % 10, int(s / 10)
+            res = str(d) + res
+
+        if c > 0: res = str(c) + res
+
+        return res
