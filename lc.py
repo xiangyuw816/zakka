@@ -89,3 +89,46 @@ class Solution(object):
         for i in xrange(1, len(nums)):
             if (i % 2) ^ (nums[i] > nums[i - 1]):
                 nums[i], nums[i - 1] = nums[i - 1], nums[i]
+
+## 259. 3Sum Smaller
+# first sort
+# i:0 ++, j:k-1 --, k: range(len), i<j
+# After sorting, if (i, j, k) is a valid triple, then (i, j-1, k), ..., (i, i+1, k) are also valid triples. count= j-i 
+def threeSumSmaller(self, nums, target):
+    nums.sort()
+    count = 0
+    for k in range(len(nums)):
+        i, j = 0, k - 1
+        while i < j:
+            if nums[i] + nums[j] + nums[k] < target:
+                count += j - i
+                i += 1
+            else:
+                j -= 1
+    return count
+
+# 340. Longest Substring with At Most K Distinct Characters
+# sliding window
+# use dictionary d to store each character and its rightmost position.
+# if if len(d) > k, delete the character with smallest pos
+
+## low: begin of the string
+class Solution(object):
+    def lengthOfLongestSubstringKDistinct(self, s, k):
+        """
+        :type s: str
+        :type k: int
+        :rtype: int
+        """
+        # Use dictionary d to keep track of (character, location) pair,
+        # where location is the rightmost location that the character appears at
+        d = {}
+        low, ret = 0, 0
+        for i, c in enumerate(s):
+            d[c] = i
+            if len(d) > k:
+                low = min(d.values())
+                del d[s[low]]
+                low += 1
+            ret = max(i - low + 1, ret)
+        return ret
