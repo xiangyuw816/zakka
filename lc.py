@@ -148,3 +148,57 @@ class Solution(object):
         if c > 0: res = str(c) + res
 
         return res
+
+#    298. Binary Tree Longest Consecutive Sequence
+## BFS: queue - popleft then add children in the end
+from collections import deque
+def longestConsecutive(self, root):
+    if not root:
+        return 0
+    ans, dq = 0, deque([[root, 1]])
+    while dq:
+        node, length = dq.popleft()
+        ans = max(ans, length)
+        for child in [node.left, node.right]:
+            if child:
+                l = length + 1 if child.val == node.val + 1 else 1
+                dq.append([child, l])
+    return ans
+
+## DFS: stack - pop
+def longestConsecutive(self, root):
+    if not root:
+        return 0
+    ans, stack = 0, [[root, 1]]
+    while stack:
+        node, length = stack.pop()
+        ans = max(ans, length)
+        for child in [node.left, node.right]:
+            if child:
+                l = length + 1 if child.val == node.val + 1 else 1
+                stack.append([child, l])
+    return ans
+
+# 394. Decode String
+## DFS, stack
+# stack: ["string", num]
+## digit -> num, [ -> append new stack & num='', ] -> pop() & add them to [-1]
+class Solution(object):
+    def decodeString(self, s):
+        stack = []
+        # to store final result
+        stack.append(["", 1])
+        num = ""
+        for ch in s:
+            if ch.isdigit():
+              num += ch
+            elif ch == '[':
+                stack.append(["", int(num)])
+                num = ""
+            elif ch == ']':
+                st, k = stack.pop()
+                # actually only one [] left, consider case "3[a2[c]]" --> X stack[0][0] (put cc into 3a s.t. accaccacc)
+                stack[-1][0] += st*k
+            else:
+                stack[-1][0] += ch
+        return stack[0][0]
