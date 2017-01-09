@@ -244,15 +244,13 @@ class Solution(object):
         :type n: int
         :rtype: float
         """
-        flag=0
         if n<0:
-            n,flag=-n,1
-        if n==0:
+            return 1/self.myPow(x,-n)
+        elif n==0:
             return 1
-        res=self.myPow(x,n/2)
-        res*=res
-        if n%2:
-            res*=x
-        if flag:
-            res=1/res
-        return res
+        else:
+            res=self.myPow(x,n/2)
+            res*=res
+            if n%2:
+                res*=x
+            return res
