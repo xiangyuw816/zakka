@@ -345,6 +345,7 @@ def searchRange(self, nums, target):
 
 # 359. Logger Rate Limiter
 
+
 # 412. Fizz Buzz
 
 # 242. Valid Anagram
@@ -390,3 +391,64 @@ class Solution(object):
                         heapq.heappush(queue, (nums1[i + 1] + nums2[j], (i + 1, j)))
                         visited[(i + 1, j)] = 1
         return ret
+
+# 425. Word Squares
+## try everyword for the 1st row e.g. ball
+## then try fitting 2nd row starting with e.g. str1[2]
+## then fit 3rd row str1[3] str2[2]
+def wordSquares(self, words):
+    n = len(words[0])
+    # {'b': ['ball','back']}
+    fulls = collections.defaultdict(list)
+    for word in words:
+        for i in range(n):
+            # e.g. back
+            # {'':'back','b': ['back'],...,'back':['back']}
+            fulls[word[:i]].append(word)
+    
+    def build(square):
+        if len(square) == n:
+            squares.append(square)
+            return
+        # zip(*[(1,4),(2,5),(3,6)]) = [(1,2,3),(4,5,6)]
+        for word in fulls[''.join(zip(*square)[len(square)])]:
+            build(square + [word])
+    squares = []
+    for word in words:
+        build([word])
+    return squares
+
+# 422. Valid Word Square
+## transpose
+def validWordSquare(self, words):
+    return map(None, *words) == map(None, *map(None, *words))
+
+# 359. Logger Rate Limiter
+## dictionary {'message': fastest timestamp to print ~ e.g. print time+10}
+class Logger(object):
+
+    def __init__(self):
+        self.ok = {}
+
+    def shouldPrintMessage(self, timestamp, message):
+        if timestamp < self.ok.get(message, 0):
+            return False
+        self.ok[message] = timestamp + 10
+        return True
+    
+# ???284. Peeking Iterator
+class PeekingIterator(object):
+    def __init__(self, iterator):
+        self.iter = iterator
+        self.temp = self.iter.next() if self.iter.hasNext() else None
+
+    def peek(self):
+        return self.temp
+
+    def next(self):
+        ret = self.temp
+        self.temp = self.iter.next() if self.iter.hasNext() else None
+        return ret
+
+    def hasNext(self):
+        return self.temp is not None
