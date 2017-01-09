@@ -255,7 +255,27 @@ class Solution(object):
                 res*=x
             return res
 
-# Zigzag Iterator
+# 281. Zigzag Iterator
+class ZigzagIterator(object):
+#[1,2,3],[4,5]
+    def __init__(self, v1, v2):
+        self.q = collections.deque([x[::-1] for x in [v1, v2] if x])
+        # [[3,2,1],[5,4]]
+    
+    def hasNext(self):
+        return len(self.q) > 0
+    
+    def next(self):
+        temp = self.q.popleft()# [3,2,1]
+        res = temp.pop()#[1]
+        # if temp has elements left, append it back
+        if temp: self.q.append(temp)
+        return res
+        
+
+# Your ZigzagIterator object will be instantiated and called as such:
+# i, v = ZigzagIterator(v1, v2), []
+# while i.hasNext(): v.append(i.next())
 
 # 78. Subsets
 # DFS recursively 
@@ -299,3 +319,23 @@ class Solution(object):
 # 121. Best Time to Buy and Sell Stock
 
 # string -- all substring with length k (??backtracking)
+
+# 332. Reconstruct Itinerary
+
+# 373. Find K Pairs with Smallest Sums
+
+# 34. Search for a Range
+## divide and conquer
+def searchRange(self, nums, target):
+    def search(lo, hi):
+        if nums[lo] == target == nums[hi]:
+            return [lo, hi]# all elements are the target
+        if nums[lo] <= target <= nums[hi]:
+            mid = (lo + hi) / 2
+            l, r = search(lo, mid), search(mid+1, hi)
+            # [-1,2]+[3,4] = [-1,2,3,4]
+            # -1 in l+r: one half does not contain target
+            # else:      both contain, so union the two.
+            return max(l, r) if -1 in l+r else [l[0], r[1]]
+        return [-1, -1]# out of range
+    return search(0, len(nums)-1)
