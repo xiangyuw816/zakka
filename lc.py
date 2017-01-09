@@ -27,12 +27,15 @@ class Solution(object):
         right=len(nums)-1
         while left<right:
             mid = (left+right)/2
+            # mid as the peak element
             if nums[mid]>nums[mid+1] and nums[mid]>nums[mid-1]:
                 return mid
+            # increasing: peak element should be in the right part
             if nums[mid]<nums[mid+1]:
                 left=mid+1
             else:
                 right=mid
+        # always non-decreasing/increasing
         return left if nums[left]>nums[right] else right
 
 # 388
@@ -339,3 +342,7 @@ def searchRange(self, nums, target):
             return max(l, r) if -1 in l+r else [l[0], r[1]]
         return [-1, -1]# out of range
     return search(0, len(nums)-1)
+
+# 359. Logger Rate Limiter
+
+# 412. Fizz Buzz
