@@ -202,3 +202,57 @@ class Solution(object):
             else:
                 stack[-1][0] += ch
         return stack[0][0]
+
+# 288. Unique Word Abbreviation
+## [('c2e', set(['cake','cage'])), ('r1d', set(['red']))]
+class ValidWordAbbr(object):    
+    def __init__(self, dictionary):
+        self.dic = collections.defaultdict(set)
+        for s in dictionary:
+            val = s
+            if len(s) > 2:
+                s = s[0]+str(len(s)-2)+s[-1]
+            self.dic[s].add(val)
+
+    def isUnique(self, word):
+        val = word 
+        if len(word) > 2:
+            word = word[0]+str(len(word)-2)+word[-1]
+        # if word abbreviation not in the dictionary, or word itself in the dictionary (word itself may 
+        # appear multiple times in the dictionary, so it's better using set instead of list)
+        return len(self.dic[word]) == 0 or (len(self.dic[word]) == 1 and val == list(self.dic[word])[0])
+    
+# 246. Strobogrammatic Number
+def isStrobogrammatic(self, num):
+    dic = {"0":"0", "1":"1", "6":"9", "8":"8", "9":"6"}
+    l, r = 0, len(num)-1
+    while l <= r:
+        # num itself 
+        if num[l] not in dic or dic[num[l]] != num[r]:
+            return False
+        l += 1
+        r -= 1
+    return True
+
+# 50. Pow(x, n)
+## recursive - pow(x,n/2)
+## remember base case
+class Solution(object):
+    def myPow(self, x, n):
+        """
+        :type x: float
+        :type n: int
+        :rtype: float
+        """
+        flag=0
+        if n<0:
+            n,flag=-n,1
+        if n==0:
+            return 1
+        res=self.myPow(x,n/2)
+        res*=res
+        if n%2:
+            res*=x
+        if flag:
+            res=1/res
+        return res
