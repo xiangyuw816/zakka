@@ -360,6 +360,9 @@ def isAnagram1(self, s, t):
     return dic1 == dic2
 
 # 373. Find K Pairs with Smallest Sums
+## already sorted 2 lists
+## use BFS to explore all elements, visited{} to store visted elements
+## pop the smallest and append it to the result
 class Solution(object):
     def kSmallestPairs(self, nums1, nums2, k):
         """
