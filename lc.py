@@ -346,3 +346,44 @@ def searchRange(self, nums, target):
 # 359. Logger Rate Limiter
 
 # 412. Fizz Buzz
+
+# 242. Valid Anagram
+## compare sorted()
+## or use hashtable to store 'char': # ocurrances
+def isAnagram1(self, s, t):
+    dic1, dic2 = {}, {}
+    for item in s:
+        # return the vaule of key: dic.get(key, default return)
+        dic1[item] = dic1.get(item, 0) + 1
+    for item in t:
+        dic2[item] = dic2.get(item, 0) + 1
+    return dic1 == dic2
+
+# 373. Find K Pairs with Smallest Sums
+class Solution(object):
+    def kSmallestPairs(self, nums1, nums2, k):
+        """
+        :type nums1: List[int]
+        :type nums2: List[int]
+        :type k: int
+        :rtype: List[List[int]]
+        """
+        import heapq
+        ret = []
+        if len(nums1) * len(nums2) > 0:
+            # queue = [(sum, (loc,index))]
+            queue = [(nums1[0] + nums2[0], (0, 0))]
+            # dictionary to skip visited vertices
+            visited = {}
+            while len(ret) < k and queue:
+                # heappop(): pop and return the smallest item
+                _, (i, j) = heapq.heappop(queue)
+                ret.append((nums1[i], nums2[j]))
+                # add two new elements into the queue. (2 if's below)
+                if j + 1 < len(nums2) and (i, j + 1) not in visited:
+                        heapq.heappush(queue, (nums1[i] + nums2[j + 1], (i, j + 1)))
+                        visited[(i, j + 1)] = 1
+                if i + 1 < len(nums1) and (i + 1, j) not in visited:
+                        heapq.heappush(queue, (nums1[i + 1] + nums2[j], (i + 1, j)))
+                        visited[(i + 1, j)] = 1
+        return ret
