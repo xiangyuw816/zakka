@@ -254,3 +254,48 @@ class Solution(object):
             if n%2:
                 res*=x
             return res
+
+# Zigzag Iterator
+
+# 78. Subsets
+# DFS recursively 
+def subsets1(self, nums):
+    res = []
+    self.dfs(sorted(nums), 0, [], res)
+    return res
+    
+def dfs(self, nums, index, path, res):
+    res.append(path)
+    for i in xrange(index, len(nums)):
+        self.dfs(nums, i+1, path+[nums[i]], res)
+        
+# Iteratively
+def subsets(self, nums):
+    res = [[]]
+    for num in sorted(nums):
+        res += [item+[num] for item in res]
+    return res
+
+# 100. Same Tree
+
+
+
+import collections
+
+# 347. Top K Frequent Elements
+class Solution(object):
+    def topKFrequent(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: List[int]
+        """
+        # Use Counter to extract the top k frequent elements
+        # most_common(k) return a list of tuples, where the first item of the tuple is the element,
+        # and the second item of the tuple is the count
+        # Thus, the built-in zip function could be used to extract the first item from the tuples
+        return zip(*collections.Counter(nums).most_common(k))[0]
+    
+# 121. Best Time to Buy and Sell Stock
+
+# string -- all substring with length k (??backtracking)
