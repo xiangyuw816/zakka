@@ -1,6 +1,6 @@
 # notes about leetcode questions
 
-# 448
+# 448. Find All Numbers Disappeared in an Array
 class Solution(object):
     def findDisappearedNumbers(self, nums):
         """
@@ -15,7 +15,7 @@ class Solution(object):
             
         return [i+1 for i in range(len(nums)) if nums[i]>0]
       
-# 162
+# 162. Find Peak Element
 class Solution(object):
     def findPeakElement(self, nums):
         """
@@ -38,7 +38,7 @@ class Solution(object):
         # always non-decreasing/increasing
         return left if nums[left]>nums[right] else right
 
-# 388
+# 388. Longest Absolute File Path
 def lengthLongestPath(self, input):
     maxlen = 0
     path = []
@@ -48,16 +48,17 @@ def lengthLongestPath(self, input):
             maxlen = max(maxlen, sum(map(len, path)) + len(path) - 1)
     return maxlen
 
-# 228 Summary Ranges
+# 228. Summary Ranges
 def summaryRanges(self, nums):
     ranges = []
     for n in nums:
+        # increment >1: add new list
         if not ranges or n > ranges[-1][-1] + 1:
             ranges += [],
         ranges[-1][1:] = n,
     return ['->'.join(map(str, r)) for r in ranges]
 
-# 163 missing ranges
+# 163. missing ranges
 class Solution(object):
     def findMissingRanges(self, nums, lower, upper):
         """
@@ -113,7 +114,7 @@ def threeSumSmaller(self, nums, target):
 # 340. Longest Substring with At Most K Distinct Characters
 # sliding window
 # use dictionary d to store each character and its rightmost position.
-# if if len(d) > k, delete the character with smallest pos
+# if len(d) > k, delete the character with smallest pos
 
 ## low: begin of the string
 class Solution(object):
@@ -127,6 +128,7 @@ class Solution(object):
         # where location is the rightmost location that the character appears at
         d = {}
         low, ret = 0, 0
+        # enumerate(s) = (index, character)
         for i, c in enumerate(s):
             d[c] = i
             if len(d) > k:
@@ -152,7 +154,7 @@ class Solution(object):
 
         return res
 
-#    298. Binary Tree Longest Consecutive Sequence
+# 298. Binary Tree Longest Consecutive Sequence
 ## BFS: queue - popleft then add children in the end
 from collections import deque
 def longestConsecutive(self, root):
@@ -164,28 +166,17 @@ def longestConsecutive(self, root):
         ans = max(ans, length)
         for child in [node.left, node.right]:
             if child:
+                # if consevative: add 1
                 l = length + 1 if child.val == node.val + 1 else 1
                 dq.append([child, l])
-    return ans
-
-## DFS: stack - pop
-def longestConsecutive(self, root):
-    if not root:
-        return 0
-    ans, stack = 0, [[root, 1]]
-    while stack:
-        node, length = stack.pop()
-        ans = max(ans, length)
-        for child in [node.left, node.right]:
-            if child:
-                l = length + 1 if child.val == node.val + 1 else 1
-                stack.append([child, l])
     return ans
 
 # 394. Decode String
 ## DFS, stack
 # stack: ["string", num]
-## digit -> num, [ -> append new stack & num='', ] -> pop() & add them to [-1]
+## if digit: num
+## if     [: push new stack & then num=''
+## if     ]: pop() & add them to [-1]
 class Solution(object):
     def decodeString(self, s):
         stack = []
@@ -210,10 +201,12 @@ class Solution(object):
 ## [('c2e', set(['cake','cage'])), ('r1d', set(['red']))]
 class ValidWordAbbr(object):    
     def __init__(self, dictionary):
+        # use dictionary to store 'dictionary'
         self.dic = collections.defaultdict(set)
         for s in dictionary:
             val = s
             if len(s) > 2:
+                # deal with abbr
                 s = s[0]+str(len(s)-2)+s[-1]
             self.dic[s].add(val)
 
@@ -226,6 +219,8 @@ class ValidWordAbbr(object):
         return len(self.dic[word]) == 0 or (len(self.dic[word]) == 1 and val == list(self.dic[word])[0])
     
 # 246. Strobogrammatic Number
+# use a dictionary to pair
+## two pointers
 def isStrobogrammatic(self, num):
     dic = {"0":"0", "1":"1", "6":"9", "8":"8", "9":"6"}
     l, r = 0, len(num)-1
@@ -261,6 +256,7 @@ class Solution(object):
 # 281. Zigzag Iterator
 class ZigzagIterator(object):
 #[1,2,3],[4,5]
+## use queue: popleft the whole v1 and append back if v1 not empty.
     def __init__(self, v1, v2):
         self.q = collections.deque([x[::-1] for x in [v1, v2] if x])
         # [[3,2,1],[5,4]]
@@ -343,6 +339,7 @@ class Solution(object):
 
 # 34. Search for a Range
 ## divide and conquer
+# write a sub function to search between (lo, hi) --> recursively call this function
 def searchRange(self, nums, target):
     def search(lo, hi):
         if nums[lo] == target == nums[hi]:
@@ -472,6 +469,7 @@ class PeekingIterator(object):
 ## hasNext check the top element in the stack and iterate it
 ### if is integer: return it
 ##           list: pop & iterate all elements and push into stack
+## stack (list, # elements) pair
 class NestedIterator(object):
 
     def __init__(self, nestedList):
@@ -502,6 +500,7 @@ class NestedIterator(object):
 class Codec:
 
     def serialize(self, root):
+        # write sub function to append
         def doit(node):
             if node:
                 vals.append(str(node.val))
@@ -555,3 +554,19 @@ class Solution:
             else:
                 return False
         return stack == []
+
+#    338. Counting Bits
+## dp[index] = dp[index - offset] + 1
+class Solution(object):
+    def countBits(self, num):
+        """
+        :type num: int
+        :rtype: List[int]
+        """
+        offset, dp=1,[]
+        dp.append(0)
+        for i in xrange(1,num+1):
+            if i==2*offset:
+                offset*=2
+            dp.append(dp[i-offset]+1)
+        return dp
