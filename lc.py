@@ -580,6 +580,7 @@ class Solution:
         return stack == []
 
 #    338. Counting Bits
+## dp as a subproblem
 ## dp[index] = dp[index - offset] + 1
 class Solution(object):
     def countBits(self, num):
