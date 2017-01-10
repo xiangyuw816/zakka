@@ -281,18 +281,11 @@ class ZigzagIterator(object):
 # while i.hasNext(): v.append(i.next())
 
 # 78. Subsets
-# DFS recursively 
-def subsets1(self, nums):
-    res = []
-    self.dfs(sorted(nums), 0, [], res)
-    return res
-    
-def dfs(self, nums, index, path, res):
-    res.append(path)
-    for i in xrange(index, len(nums)):
-        self.dfs(nums, i+1, path+[nums[i]], res)
-        
 # Iteratively
+## push into: each element + nums[i]
+## 0: []
+## 1: [], [1]
+## 2: [], [1], [ + 2], [1 + 2]
 def subsets(self, nums):
     res = [[]]
     for num in sorted(nums):
@@ -300,12 +293,21 @@ def subsets(self, nums):
     return res
 
 # 100. Same Tree
-
-
-
-import collections
+## do this recursively
+### if node equal, then isSameTree(left) and isSameTree(right)
+class Solution(object):
+    def isSameTree(self, p, q):
+        """
+        :type p: TreeNode
+        :type q: TreeNode
+        :rtype: bool
+        """
+        if p and q:
+            return p.val == q.val and self.isSameTree(p.left, q.left) and self.isSameTree(p.right, q.right)
+        return p is q 
 
 # 347. Top K Frequent Elements
+import collections
 class Solution(object):
     def topKFrequent(self, nums, k):
         """
@@ -320,10 +322,25 @@ class Solution(object):
         return zip(*collections.Counter(nums).most_common(k))[0]
     
 # 121. Best Time to Buy and Sell Stock
+# maxCur: 
+class Solution(object):
+    def maxProfit(self, prices):
+        """
+        :type prices: List[int]
+        :rtype: int
+        """
+        maxCur, maxSoFar=0,0
+        for i in xrange(1,len(prices)):
+            ### add to itself!!
+            maxCur += prices[i]-prices[i-1]
+            maxCur = max(0, maxCur)
+            maxSoFar = max(maxCur, maxSoFar)
+        return maxSoFar
 
 # string -- all substring with length k (??backtracking)
 
 # 332. Reconstruct Itinerary
+
 
 # 373. Find K Pairs with Smallest Sums
 
@@ -343,9 +360,6 @@ def searchRange(self, nums, target):
         return [-1, -1]# out of range
     return search(0, len(nums)-1)
 
-# 359. Logger Rate Limiter
-
-
 # 412. Fizz Buzz
 
 # 242. Valid Anagram
@@ -361,6 +375,7 @@ def isAnagram1(self, s, t):
     return dic1 == dic2
 
 # 373. Find K Pairs with Smallest Sums
+#### deal with certain length
 ## already sorted 2 lists
 ## use BFS to explore all elements, visited{} to store visted elements
 ## pop the smallest and append it to the result
@@ -441,10 +456,10 @@ class PeekingIterator(object):
     def __init__(self, iterator):
         self.iter = iterator
         self.temp = self.iter.next() if self.iter.hasNext() else None
-
+    # next iterator's next
     def peek(self):
         return self.temp
-
+    # next iterator
     def next(self):
         ret = self.temp
         self.temp = self.iter.next() if self.iter.hasNext() else None
@@ -452,3 +467,60 @@ class PeekingIterator(object):
 
     def hasNext(self):
         return self.temp is not None
+
+# 341. Flatten Nested List Iterator
+## hasNext check the top element in the stack and iterate it
+### if is integer: return it
+##           list: pop & iterate all elements and push into stack
+class NestedIterator(object):
+
+    def __init__(self, nestedList):
+        self.stack = [[nestedList, 0]]
+
+    def next(self):
+        self.hasNext()
+        nestedList, i = self.stack[-1]
+        self.stack[-1][1] += 1
+        return nestedList[i].getInteger()
+            
+    def hasNext(self):
+        s = self.stack
+        while s:
+            nestedList, i = s[-1]
+            if i == len(nestedList):
+                s.pop()
+            else:
+                x = nestedList[i]
+                if x.isInteger():
+                    return True
+                s[-1][1] += 1
+                s.append([x.getList(), 0])
+        return False
+    
+# 297. Serialize and Deserialize Binary Tree
+## pre-order
+class Codec:
+
+    def serialize(self, root):
+        def doit(node):
+            if node:
+                vals.append(str(node.val))
+                doit(node.left)
+                doit(node.right)
+            else:
+                vals.append('#')
+        vals = []
+        doit(root)
+        return ' '.join(vals)
+
+    def deserialize(self, data):
+        def doit():
+            val = next(vals)
+            if val == '#':
+                return None
+            node = TreeNode(int(val))
+            node.left = doit()
+            node.right = doit()
+            return node
+        vals = iter(data.split())
+        return doit()
