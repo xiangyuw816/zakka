@@ -341,9 +341,6 @@ class Solution(object):
 
 # 332. Reconstruct Itinerary
 
-
-# 373. Find K Pairs with Smallest Sums
-
 # 34. Search for a Range
 ## divide and conquer
 def searchRange(self, nums, target):
