@@ -336,6 +336,30 @@ class Solution(object):
 # string -- all substring with length k (??backtracking)
 
 # 332. Reconstruct Itinerary
+## dictionary {'depart': arrival s}
+## use dfs to try every sub itinerary
+def findItinerary(self, tickets):
+    d = defaultdict(list)
+    for flight in tickets:
+        d[flight[0]] += flight[1],
+    self.route = ["JFK"]
+    
+    def dfs(start = 'JFK'):
+        # used all flights
+        if len(self.route) == len(tickets) + 1:
+            return self.route
+        # sort all arrivals
+        myDsts = sorted(d[start])
+        ## first append route, if not worked: pop route & add the flight back
+        for dst in myDsts:
+            d[start].remove(dst)
+            self.route += dst,
+            worked = dfs(dst)
+            if worked:
+                return worked
+            self.route.pop()
+            d[start] += dst,
+    return dfs()
 
 # 34. Search for a Range
 ## divide and conquer
