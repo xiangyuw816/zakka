@@ -358,6 +358,9 @@ def searchRange(self, nums, target):
     return search(0, len(nums)-1)
 
 # 412. Fizz Buzz
+## if i%3: 'Fizz'
+def fizzBuzz(self, n):
+    return ['Fizz' * (not i % 3) + 'Buzz' * (not i % 5) or str(i) for i in range(1, n+1)]
 
 # 242. Valid Anagram
 ## compare sorted()
@@ -521,3 +524,34 @@ class Codec:
             return node
         vals = iter(data.split())
         return doit()
+
+# 46. Permutations
+# DFS
+def permute(self, nums):
+    res = []
+    self.dfs(nums, [], res)
+    return res
+    
+def dfs(self, nums, path, res):
+    if not nums:
+        res.append(path)
+        # return # backtracking
+    for i in xrange(len(nums)):
+        self.dfs(nums[:i]+nums[i+1:], path+[nums[i]], res)
+        
+# 20. Valid Parentheses
+## brackets must close in the right order
+class Solution:
+    # @return a boolean
+    def isValid(self, s):
+        stack = []
+        dict = {"]":"[", "}":"{", ")":"("}
+        for char in s:
+            if char in dict.values():
+                stack.append(char)
+            elif char in dict.keys():
+                if stack == [] or dict[char] != stack.pop():
+                    return False
+            else:
+                return False
+        return stack == []
