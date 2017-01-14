@@ -609,7 +609,8 @@ class Solution(object):
 
 # 399. Evaluate Division
 ## (A/B)*(B/C)*(C/D) is like the path A->B->C->D
-## use dictionary to store values
+## use double index dictionary to create values
+## use permutations to add the val indirectly.
 def calcEquation(self, equations, values, queries):
     quot = collections.defaultdict(dict)
     # zip(equations, values): [(['a', 'b'], 2.0), (['b', 'c'], 3.0)]
@@ -617,9 +618,13 @@ def calcEquation(self, equations, values, queries):
         quot[num][num] = quot[den][den] = 1.0
         quot[num][den] = val
         quot[den][num] = 1 / val
+    # permutations('ABCD', 2): A_4_2; combinations('ABCD', 2): C_4_2.
+    # (a,c,b), (a,b,c)...
     for k, i, j in itertools.permutations(quot, 3):
+        # add new path
         if k in quot[i] and j in quot[k]:
             quot[i][j] = quot[i][k] * quot[k][j]
+    # answer does not exist: -1.0
     return [quot[num].get(den, -1.0) for num, den in queries]
 
 # 165. Compare Version Numbers
