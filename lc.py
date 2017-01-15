@@ -661,5 +661,34 @@ class Solution(object):
         return res
 
 # 418. Sentence Screen Fitting
-## dynamic programming - sub problem
-##
+## dynamic programming - find the sub problem --> no need to calculate more repeated cases.
+# nextIndex: start from index i -> get the index at the end of the line
+# time: start from index i -> the number of times we fit a whole sentence.
+# res += time[start]
+class Solution(object):
+    def wordsTyping(self, sentence, rows, cols):
+        """
+        :type sentence: List[str]
+        :type rows: int
+        :type cols: int
+        :rtype: int
+        """
+        nextIndex,time=[],[]
+        for i in range(len(sentence)):
+            cur,t=i,0
+            curLen=0
+            while curLen+len(sentence[cur])<=cols:
+                curLen+=len(sentence[cur])+1
+                cur+=1
+                # end of the sentence: time++ & restart from beginning
+                if cur==len(sentence):
+                    cur=0
+                    t+=1
+            nextIndex.append(cur)
+            time.append(t)
+        
+        cur,res=0,0    
+        for i in range(rows):
+            res+=time[cur]
+            cur=nextIndex[cur]
+        return cur
