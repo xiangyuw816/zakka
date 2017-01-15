@@ -156,6 +156,7 @@ class Solution(object):
 
 # 298. Binary Tree Longest Consecutive Sequence
 ## BFS: queue - popleft then add children in the end
+## tree: [element, # consevative length so far] - structure
 from collections import deque
 def longestConsecutive(self, root):
     if not root:
