@@ -693,3 +693,29 @@ class Solution(object):
             res+=time[cur]
             cur=nextIndex[cur]
         return cur
+
+# 200. Number of Islands
+# 289. Game of Life
+# 351. Android Unlock Patterns
+# 351. Android Unlock Patterns???
+
+# 286. Walls and Gates
+## BFS
+## find a gate --> append its surroding with val=1
+##               --> inside this queue: each val=min(val, new added from gate)
+##                      --> extend its surroding with val+1
+def wallsAndGates(self, rooms):
+    if not rooms:
+        return 
+    r, c= len(rooms), len(rooms[0])
+    for i in xrange(r):
+        for j in xrange(c):
+            if rooms[i][j] == 0:
+                queue = collections.deque([(i+1, j, 1), (i-1, j, 1), (i, j+1, 1), (i, j-1, 1)])
+                while queue:
+                    x, y, val = queue.popleft()
+                    # pruning
+                    if x < 0 or x >= r or y < 0 or y >= c or rooms[x][y] <= val:
+                        continue
+                    rooms[x][y] = val
+                    queue.extend([(x+1, y, val+1), (x-1, y, val+1), (x, y+1, val+1), (x, y-1, val+1)])
