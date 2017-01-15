@@ -702,7 +702,8 @@ class Solution(object):
 # 286. Walls and Gates
 ## BFS
 ## find a gate --> append its surroding with val=1
-##               --> inside this queue: each val=min(val, new added from gate)
+##               --> inside this queue: ### prune: out of range & dist already smaller
+##                      -->   each val=min(val, new added from gate)
 ##                      --> extend its surroding with val+1
 def wallsAndGates(self, rooms):
     if not rooms:
