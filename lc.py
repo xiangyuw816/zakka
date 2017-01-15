@@ -628,3 +628,34 @@ def calcEquation(self, equations, values, queries):
     return [quot[num].get(den, -1.0) for num, den in queries]
 
 # 165. Compare Version Numbers
+## e.g. v1=1.2.3 v2=2.1
+## write a for loop to compare from the 1st level to max level
+## gap: the difference between corresponding version level
+class Solution:
+    def compareVersion(self, version1, version2):
+        v1 = version1.split('.')
+        v2 = version2.split('.')
+        for i in range(max(len(v1), len(v2))):
+            gap = (int(v1[i]) if i < len(v1) else 0) - (int(v2[i]) if i < len(v2) else 0)
+            if gap != 0:
+                return 1 if gap > 0 else -1
+        return 0
+
+# 482. License Key Formatting
+# format: (len % K) - K - ... - K
+## the same length --> better use while loop (no need to i*K)
+class Solution(object):
+    def licenseKeyFormatting(self, S, K):
+        """
+        :type S: str
+        :type K: int
+        :rtype: str
+        """
+        S = S.upper().replace('-','')
+        size = len(S)
+        s1 = K if size%K==0 else size%K
+        res = S[:s1]
+        while s1<size:
+            res += '-'+S[s1:s1+K]
+            s1 += K
+        return res
