@@ -659,3 +659,7 @@ class Solution(object):
             res += '-'+S[s1:s1+K]
             s1 += K
         return res
+
+# 418. Sentence Screen Fitting
+## dynamic programming - sub problem
+##
