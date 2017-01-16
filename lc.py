@@ -1,18 +1,19 @@
 # notes about leetcode questions
 
-## string: two pointers
+## string: two pointers, binary search
 ## matrix: dfs
 ## permutations: dfs
 
 # 448. Find All Numbers Disappeared in an Array
+## use nums[i] as index to make nums[index] as negative
+## filter those positive nums and get the index
 class Solution(object):
     def findDisappearedNumbers(self, nums):
         """
         :type nums: List[int]
         :rtype: List[int]
         """
-        # use nums[i] as index to make nums[index] as negative
-        # filter those positive nums and get the index
+
         for i in range(len(nums)):
             ind = abs(nums[i])-1
             nums[ind] = -abs(nums[ind])
@@ -20,13 +21,13 @@ class Solution(object):
         return [i+1 for i in range(len(nums)) if nums[i]>0]
       
 # 162. Find Peak Element
+## binary search
 class Solution(object):
     def findPeakElement(self, nums):
         """
         :type nums: List[int]
         :rtype: int
         """
-        # binary search
         left =0
         right=len(nums)-1
         while left<right:
