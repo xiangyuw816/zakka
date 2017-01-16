@@ -1,5 +1,9 @@
 # notes about leetcode questions
 
+## string: two pointers
+## matrix: dfs
+## permutations: dfs
+
 # 448. Find All Numbers Disappeared in an Array
 class Solution(object):
     def findDisappearedNumbers(self, nums):
