@@ -700,7 +700,7 @@ class Solution(object):
 # 351. Android Unlock Patterns???
 
 # 286. Walls and Gates
-## BFS
+## BFS with matrix
 ## find a gate --> append its surroding with val=1
 ##               --> inside this queue: ### prune: out of range & dist already smaller
 ##                      -->   each val=min(val, new added from gate)
@@ -720,3 +720,28 @@ def wallsAndGates(self, rooms):
                         continue
                     rooms[x][y] = val
                     queue.extend([(x+1, y, val+1), (x-1, y, val+1), (x, y+1, val+1), (x, y-1, val+1)])
+
+# 320. Generalized Abbreviation
+## current element abbreviated or not: so total # of permutation = 2^n
+## DFS: (deep) replace 0th element, then replace pos+1 from the previous one --> until no more elements can be replaced.
+## BFS: (breadth) replace 0th, then 1st, 2nd...
+
+# 345. Reverse Vowels of a String
+## two pointers
+class Solution(object):
+    def reverseVowels(self, s):
+        """
+        :type s: str
+        :rtype: str
+        """
+        vowel = 'AEIOUaeiou'
+        s = list(s)
+        i,j = 0, len(s)-1
+        while i<j:
+            while s[i] not in vowel and i<j:
+                i = i + 1
+            while s[j] not in vowel and i<j:
+                j = j - 1
+            s[i], s[j] = s[j], s[i]
+            i, j = i + 1, j - 1
+        return ''.join(s)
