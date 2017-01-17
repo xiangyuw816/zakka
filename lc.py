@@ -495,13 +495,15 @@ class PeekingIterator(object):
     def hasNext(self):
         return self.temp is not None
 
-# 341. Flatten Nested List Iterator
+# 341. Flatten Nested List Iterator??
 ## hasNext check the top element in the stack and iterate it
 ### if is integer: return it
 ##           list: pop & iterate all elements and push into stack
 ## stack (list, # elements) pair
 class NestedIterator(object):
-
+# Your NestedIterator object will be instantiated and called as such:
+# i, v = NestedIterator(nestedList), []
+# while i.hasNext(): v.append(i.next())
     def __init__(self, nestedList):
         self.stack = [[nestedList, 0]]
 
@@ -750,3 +752,41 @@ class Solution(object):
             s[i], s[j] = s[j], s[i]
             i, j = i + 1, j - 1
         return ''.join(s)
+    
+# 247. Strobogrammatic Number II
+## observations
+## n%2: oddCandidate inside findStrobogrammatic(n-1)
+## else: evenCandidate inside findStrobogrammatic(n-2)
+class Solution(object):
+    def findStrobogrammatic(self, n):
+        """
+        :type n: int
+        :rtype: List[str]
+        """
+        evenCandidate=['11','88','00','69','96']
+        oddCandidate=['1','8','0']
+        if n==1:
+            return oddCandidate
+        if n==2:
+            return ['11','88','69','96']
+        if n%2:
+            pre, midCandidate=self.findStrobogrammatic(n-1),oddCandidate
+        else:
+            pre, midCandidate=self.findStrobogrammatic(n-2),evenCandidate
+        mid=(n-1)/2
+        return [p[:mid]+c+p[mid:] for p in pre for c in midCandidate]
+    
+# 294. Flip Game II
+## memoization: dictionary
+## TRUE: has a '++' and after flip to '--', the new string is False.
+## at least one such situation exist --> thus use any()
+class Solution(object):
+    def canWin(self, s):
+        memo = {}
+        def can(s):
+            if s not in memo:
+                # any(): return True when at least has one True
+                memo[s] = any(s[i:i+2] == '++' and not can(s[:i] + '-' + s[i+2:])
+                              for i in range(len(s)))
+            return memo[s]
+        return can(s)
