@@ -733,6 +733,40 @@ def wallsAndGates(self, rooms):
 ## DFS: (deep) replace 0th element, then replace pos+1 from the previous one --> until no more elements can be replaced.
 ## BFS: (breadth) replace 0th, then 1st, 2nd...
 
+## DFS: dfs(string, result, start pos) --> for i in start pos:len, for j in i:len: string[:i]+str(j-i+1)+str[j+1:]
+##                                                                             AND dfs(newStr, result,j+1)
+class Solution(object):
+    def generateAbbreviations(self, string):
+        """
+        :type word: str
+        :rtype: List[str]
+        """
+        # if the ith element in the string is number
+        def isValid(string, i):
+            if i < 0 or i == len(string):
+                return True
+            # 0~9
+            elif ( ord(string[i]) - ord('0') ) >= 0 and ( ord(string[i]) - ord('0') ) < 10:
+                return False
+            else:
+                return True
+                
+        def dfs(string,res,begin):
+            res.add(string)
+            for i in range(begin,len(string)):
+                if isValid(string, i-1):
+                    for j in range(i,len(string)):
+                        if isValid(string, j+1):
+                            newWord = string[:i] + str( j - i + 1 ) + string[j+1:]
+                            dfs(newWord,res,j+1)
+
+        res = set([])
+        dfs(string,res,0)
+        lis = []
+        for i in res:
+            lis.append(i)
+        return lis
+
 # 345. Reverse Vowels of a String
 ## two pointers
 class Solution(object):
@@ -829,3 +863,68 @@ class Solution(object):
     for i in range(3, n+1):
         same, dif = dif, (same+dif)*(k-1)
     return same + dif
+
+# 253. Meeting Rooms II
+## sort start & end time --> search in a timely order
+## if start>end: (need a room) available -=1 OR if available=0: numRooms +=1
+## if start<end: (have an empty room) available += 1
+ def minMeetingRooms(self, intervals):
+        starts = []
+        ends = []
+        for i in intervals:
+            starts.append(i.start)
+            ends.append(i.end)
+        
+        starts.sort()
+        ends.sort()
+        s = e = 0
+        numRooms = available = 0
+        while s < len(starts):
+            if starts[s] < ends[e]:
+                if available == 0:
+                    numRooms += 1
+                else:
+                    available -= 1
+                s += 1
+            else:
+                available += 1
+                e += 1
+        
+        return numRooms
+
+# 362. Design Hit Counter
+## num_of_hits: each time call hit() ++1
+## time_hits: queue [[time, # hits]]
+## getHits(): delete those out of 300 
+##          smaller than 300s --> while time_hits[0][0] out of 300: popleft()
+class HitCounter(object):
+    def __init__(self):
+        """
+        Initialize your data structure here.
+        """
+        self.num_of_hits = 0
+        self.time_hits = collections.deque()
+
+    def hit(self, timestamp):
+        """
+        Record a hit.
+        @param timestamp - The current timestamp (in seconds granularity).
+        :type timestamp: int
+        :rtype: void
+        """
+        if not self.time_hits or self.time_hits[-1][0] != timestamp:
+            self.time_hits.append([timestamp, 1])
+        else:
+            self.time_hits[-1][1] += 1
+        self.num_of_hits += 1
+
+    def getHits(self, timestamp):
+        """
+        Return the number of hits in the past 5 minutes.
+        @param timestamp - The current timestamp (in seconds granularity).
+        :type timestamp: int
+        :rtype: int
+        """
+        while self.time_hits and self.time_hits[0][0] <= timestamp - 300:
+            self.num_of_hits -= self.time_hits.popleft()[1]
+        return self.num_of_hits
