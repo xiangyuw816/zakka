@@ -790,3 +790,20 @@ class Solution(object):
                               for i in range(len(s)))
             return memo[s]
         return can(s)
+
+# 389. Find the Difference
+## dictionary: {'char': # occurances}
+## 1st string: add one; 2nd string: minus one --> return char with 0 occurance.
+class Solution(object):
+    """
+    dictionary
+    """
+    def findTheDifference(self, s, t):
+        dic = {}
+        for ch in s:
+            dic[ch] = dic.get(ch, 0) + 1
+        for ch in t:
+            if dic.get(ch, 0) == 0:
+                return ch
+            else:
+                dic[ch] -= 1
