@@ -807,3 +807,25 @@ class Solution(object):
                 return ch
             else:
                 dic[ch] -= 1
+
+# 360. Sort Transformed Array
+## a>0: max should be in either side
+## a<0: min should be in either side
+## use two pointers!! to compare.
+
+# 276. Paint Fence
+## n==1: k
+## n==2: same: k*1; diff: k*(k-1)
+####### think as to print same/diff --> consistent
+## n==3: given pre same: k*1*(k-1) - diff
+##       given pre diff: k*(k-1) *(1 + k-1) - both same&diff
+## ... to print same: pre.diff
+## ... to print diff: (pre.diff+pre.same)*(k-1)
+    if n == 0:
+        return 0
+    if n == 1:
+        return k
+    same, dif = k, k*(k-1)
+    for i in range(3, n+1):
+        same, dif = dif, (same+dif)*(k-1)
+    return same + dif
