@@ -928,3 +928,58 @@ class HitCounter(object):
         while self.time_hits and self.time_hits[0][0] <= timestamp - 300:
             self.num_of_hits -= self.time_hits.popleft()[1]
         return self.num_of_hits
+
+# 318. Maximum Product of Word Lengths
+## BIT
+## mask: check whether two words share common letters
+    class Solution(object):
+    def maxProduct(self, words):
+        d = {}
+        for w in words:
+            mask = 0
+            for c in set(w):
+                mask |= (1 << (ord(c) - 97))
+            d[mask] = max(d.get(mask, 0), len(w))
+        return max([d[x] * d[y] for x in d for y in d if not x & y] or [0])
+    
+# 274. H-Index
+## sort first
+## citations[i] >= len - i
+def hIndex(self, citations):
+    citations.sort()
+    n = len(citations)
+    for i in xrange(n):
+        if citations[i] >= (n-i):
+            return n-i
+    return 0
+
+# 270. Closest Binary Search Tree Value
+## binary search property: all left sub-tree < node < right sub-tree for each node
+## recursive: min(root, left/right optinum)
+def closestValue(self, root, target):
+    a = root.val
+    kid = root.left if target < a else root.right
+    if not kid: return a
+    b = self.closestValue(kid, target)
+    return min((b, a), key=lambda x: abs(target - x))
+## iterative: walk the path down (add all potentials to the path and compare)
+def closestValue(self, root, target):
+    path = []
+    while root:
+        path += root.val,
+        root = root.left if target < root.val else root.right
+    return min(path[::-1], key=lambda x: abs(target - x))
+
+# 249. Group Shifted Strings
+## the distance between two char corespondingly should be the same.
+class Solution(object):  
+    def groupStrings(self, strings):  
+        """ 
+        :type strings: List[str] 
+        :rtype: List[List[str]] 
+        """  
+        d = collections.defaultdict(list)  
+        for s in strings:  
+            shift = tuple([(ord(c) - ord(s[0])) % 26 for c in s])  
+            d[shift].append(s)  
+        return map(sorted, d.values())  
