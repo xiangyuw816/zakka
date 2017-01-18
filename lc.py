@@ -983,3 +983,36 @@ class Solution(object):
             shift = tuple([(ord(c) - ord(s[0])) % 26 for c in s])  
             d[shift].append(s)  
         return map(sorted, d.values())  
+
+# 230. Kth Smallest Element in a BST
+## BST： use in-order tranverse --> s.t traverse in an increasing order
+## stack: push into all left nodes
+class Solution:
+        def kthSmallest(self, root, k):
+            i=0
+            stack=[]
+            node=root
+            while node or stack:
+                # push into all left-most nodes
+                while node:
+                    stack.append(node)
+                    node=node.left
+                node=stack.pop()
+                i+=1
+                if i==k:
+                    return node.val
+                node=node.right
+# 369. Plus One Linked List               
+## reverse linked list, then add --> then reverse
+def plusOne(self, head):
+    # reverse linked list
+    tail = None
+    while head:
+        head.next, head, tail = tail, head.next, head
+    carry = 1
+    while tail:
+        carry, tail.val = divmod(carry + tail.val, 10)
+        if carry and not tail.next:
+            tail.next = ListNode(0)
+        tail.next, tail, head = head, tail.next, tail
+    return head
