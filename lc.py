@@ -513,36 +513,45 @@ class PeekingIterator(object):
 
 # 341. Flatten Nested List Iterator??
 ## hasNext check the top element in the stack and iterate it
-### if is integer: return it
-##           list: pop & iterate all elements and push into stack
-## stack (list, # elements) pair
+## when stack empty: get top element in nestedList
+## pop top element in stack
+##              if integer: return it
+##              if not:     push into stack use reverse order.
 class NestedIterator(object):
 # Your NestedIterator object will be instantiated and called as such:
 # i, v = NestedIterator(nestedList), []
 # while i.hasNext(): v.append(i.next())
     def __init__(self, nestedList):
-        self.stack = [[nestedList, 0]]
+        """
+        Initialize your data structure here.
+        :type nestedList: List[NestedInteger]
+        """
+        self.stack = []
+        self.nested = nestedList        
 
     def next(self):
-        self.hasNext()
-        nestedList, i = self.stack[-1]
-        self.stack[-1][1] += 1
-        return nestedList[i].getInteger()
-            
+        """
+        :rtype: int
+        """
+        return self.stack.pop().getInteger()       
+
     def hasNext(self):
-        s = self.stack
-        while s:
-            nestedList, i = s[-1]
-            if i == len(nestedList):
-                s.pop()
-            else:
-                x = nestedList[i]
-                if x.isInteger():
-                    return True
-                s[-1][1] += 1
-                s.append([x.getList(), 0])
+        """
+        :rtype: bool
+        """
+        while self.stack or self.nested:
+            if not self.stack:
+                # pop(0) == popleft()
+                self.stack.append(self.nested.pop(0))
+            # if not integer
+            while self.stack and not self.stack[-1].isInteger():
+                tmp = self.stack.pop().getList()
+                for t in tmp[::-1]:
+                    self.stack.append(t)
+            if self.stack:
+                return True
         return False
-    
+
 # 297. Serialize and Deserialize Binary Tree
 ## pre-order
 class Codec:
@@ -590,6 +599,9 @@ def dfs(self, nums, path, res):
         
 # 20. Valid Parentheses
 ## brackets must close in the right order
+## if first half: push it to stack
+## if post half: if stack empty or stack.pop() != correspond half --> False
+## after loop, stack is empty ~ True
 class Solution:
     # @return a boolean
     def isValid(self, s):
@@ -607,6 +619,7 @@ class Solution:
 
 #    338. Counting Bits
 ## dp as a subproblem
+## transition function:
 ## dp[index] = dp[index - offset] + 1
 class Solution(object):
     def countBits(self, num):
@@ -864,6 +877,22 @@ class Solution(object):
 ## a>0: max should be in either side
 ## a<0: min should be in either side
 ## use two pointers!! to compare.
+##  d as the incremental for i
+def sortTransformedArray(self, nums, a, b, c):
+    nums = [x*x*a + x*b + c for x in nums]
+    ret = [0] * len(nums)
+    p1, p2 = 0, len(nums) - 1
+    i, d = (p1, 1) if a < 0 else (p2, -1)
+    while p1 <= p2:
+        # a<0: d=1 -> return min first. ==> here, p1 smaller.
+        if nums[p1] * -d > nums[p2] * -d:
+            ret[i] = nums[p1]
+            p1 += 1
+        else:
+            ret[i] = nums[p2]
+            p2 -=1
+        i += d
+    return ret
 
 # 276. Paint Fence
 ## n==1: k
