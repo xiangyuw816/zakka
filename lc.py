@@ -558,6 +558,9 @@ class Codec:
 
 # 46. Permutations
 # DFS
+## path to append results
+## for each element in nums, begin with it 
+## e.g [1,2,3] i=0 dfs([2,3],[1]) --> [1,2,3], [1,3,2]
 def permute(self, nums):
     res = []
     self.dfs(nums, [], res)
@@ -566,7 +569,6 @@ def permute(self, nums):
 def dfs(self, nums, path, res):
     if not nums:
         res.append(path)
-        # return # backtracking
     for i in xrange(len(nums)):
         self.dfs(nums[:i]+nums[i+1:], path+[nums[i]], res)
         
@@ -1016,3 +1018,35 @@ def plusOne(self, head):
             tail.next = ListNode(0)
         tail.next, tail, head = head, tail.next, tail
     return head
+
+# 279. Perfect Squares
+### dp[n] = Min{ dp[n - i*i] + 1 },  n - i*i >=0 && i >= 1
+class Solution(object):
+    def numSquares(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        dp={0:0}
+        for i in range(1,n+1):
+            dp[i]=min(dp[i-j*j]+1 for j in range(1,int(i**.5)+1))
+        return dp[n]
+    
+# 417. Pacific Atlantic Water Flow
+
+# 91. Decode Ways
+#dp[i] = dp[i-1] if s[i] != "0"
+#       +dp[i-2] if "09" < s[i-1:i+1] < "27"
+class Solution:
+    # @param s, a string
+    # @return an integer
+    def numDecodings(self, s):
+        if not s: return 0
+        dp = [0 for x in range(len(s)+1)]# dp=[0]*len(s)
+        dp[0] = 1
+        for i in range(1, len(s)+1):
+            if s[i-1] != "0":
+                dp[i] += dp[i-1]
+            if i != 1 and s[i-2:i] < "27" and s[i-2:i] > "09":  #"01"ways = 0
+                dp[i] += dp[i-2]
+        return dp[len(s)]
