@@ -317,11 +317,18 @@ class Solution(object):
         :type k: int
         :rtype: List[int]
         """
-        # Use Counter to extract the top k frequent elements
-        # most_common(k) return a list of tuples, where the first item of the tuple is the element,
-        # and the second item of the tuple is the count
-        # Thus, the built-in zip function could be used to extract the first item from the tuples
-        return zip(*collections.Counter(nums).most_common(k))[0]
+        # Use Counter to get the frequency -- dictionary
+        counts = collections.Counter(nums)
+        heap = []
+        for key, cnt in counts.items():
+            if len(heap) < k:
+                # push elements into heap
+                heapq.heappush(heap, (cnt, key))
+            else:
+                if heap[0][0] < cnt:
+                    heapq.heappop(heap)
+                    heapq.heappush(heap, (cnt, key))
+        return [x[1] for x in heap]
     
 # 121. Best Time to Buy and Sell Stock
 # maxCur: 
@@ -1050,3 +1057,27 @@ class Solution:
             if i != 1 and s[i-2:i] < "27" and s[i-2:i] > "09":  #"01"ways = 0
                 dp[i] += dp[i-2]
         return dp[len(s)]
+
+#    459. Repeated Substring Pattern
+## i--: n/2->1
+## if not len%i: (devisible) s[:i]*len%i -->if equal: return True
+
+# 463. Island Perimeter
+## perimeter= 4*#(1) - 2*#(continuous)
+class Solution(object):
+    def islandPerimeter(self, grid):
+        """
+        :type grid: List[List[int]]
+        :rtype: int
+        """
+        count, repeat=0,0
+        for i in range(len(grid)):
+            for j in range(len(grid[0])):
+                if grid[i][j]==1:
+                    count+=1
+                    ## consider continuous --> 2 direction s.t. no repeat.
+                    if i!=len(grid)-1 and grid[i+1][j]==1:
+                        repeat+=1
+                    if j!=len(grid[0])-1 and grid[i][j+1]==1:
+                        repeat+=1
+        return 4*count-2*repeat
