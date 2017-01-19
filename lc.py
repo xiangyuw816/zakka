@@ -116,6 +116,15 @@ def threeSumSmaller(self, nums, target):
                 j -= 1
     return count
 
+
+## a stream of 1 and 0, flip 0 to get max consevative length of 1
+## sliding window
+## wL=wR=0, bestL=bestR=0
+## a window covering from index wL to index wR. Let the number of zeros inside the window be zeroCount.
+##  – While zeroCount is no more than m: expand the window to the right (wR++) and update the count zeroCount.
+##  – While zeroCount exceeds m, shrink the window from left (wL++), update zeroCount;
+##  – Update the widest window along the way. The positions of output zeros are inside the best window.
+
 # 340. Longest Substring with At Most K Distinct Characters
 # sliding window
 # use dictionary d to store each character and its rightmost position.
@@ -1081,3 +1090,27 @@ class Solution(object):
                     if j!=len(grid[0])-1 and grid[i][j+1]==1:
                         repeat+=1
         return 4*count-2*repeat
+
+#    261. Graph Valid Tree
+## use BFS to visit the graph: for a node append its dic value to the queue.
+## invalid when:
+##   encountered the vertice that just been visited
+##   or when finished visiting, there are still nodes that has not been visited
+## use dictionary to record vertices that has been visited
+def validTree(self, n, edges):
+    dic = {i: set() for i in xrange(n)}
+    for i, j in edges:
+        dic[i].add(j)
+        dic[j].add(i)
+    visited = set()
+    queue = collections.deque([dic.keys()[0]])
+    while queue:
+        node = queue.popleft()
+        if node in visited:
+            return False
+        visited.add(node)
+        for neighbour in dic[node]:
+            queue.append(neighbour)
+            dic[neighbour].remove(node)
+        dic.pop(node)
+    return not dic
