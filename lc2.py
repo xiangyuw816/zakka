@@ -107,3 +107,61 @@ class Solution(object):
                 if grid[i][j] == 1:
                     count += sum_adjacent(i, j)
         return count
+
+"""1. Two Sum"""
+class Solution:
+    def twoSum(self, nums, target):
+        # Write your code hereclass Solution:
+        # dict = {'diff till target': index}
+        map = {}
+        for i in range(len(num)):
+            if num[i] not in map:
+                map[target - num[i]] = i + 1
+            else:
+                return map[num[i]], i + 1
+
+        return -1, -1
+      
+""""test"""
+def sliding_window_template(string, target):
+    # Initiation:
+    result = []#  or int to save results
+    if len(target)>len(string):
+        return result
+    
+    # create a hashmap to save characters of the target substring
+    ## {character: frequence of the characters}
+    still_need_dict = {}
+    for c in target:
+        still_need_dict[c] = still_need_dict.get(c, 0) + 1
+    # maintain a counter to check whether match the target string
+    counter = len(still_need_dict) # must be map size, for maybe dups in char
+    
+    # two pointers: begin: left of the window; end: right of the window
+    begin = end = 0
+    # the length of the substring which match the target string
+    head = 0
+    length = 0
+    while end < len(target):
+        c = string[end]
+        if c in still_need_dict.keys():
+            still_need_dict[c] -= 1 # plus / minus one
+            if still_need_dict[c] == 0:
+                counter -= 1 # modify counter according to requirements
+        
+        end += 1
+        
+        while counter == 0: # different situations
+            tempc = string[begin]##
+            if tempc in still_need_dict.keys():
+                still_need_dict[tempc] += 1
+                if still_need_dict[tempc] > 0:
+                    counter -= 1 # modify count for different situations
+            
+            #### update result
+            if(end-begin == len(target)):
+                result.add(begin)
+
+            begin += 1
+            
+    return result
