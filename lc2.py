@@ -122,7 +122,7 @@ class Solution:
 
         return -1, -1
       
-""""test"""
+""""Sliding window problems / substring"""
 class Solution(object):
     def findAnagrams(self, string, target):
         result = []#  or int to save results
@@ -166,3 +166,20 @@ class Solution(object):
                 begin += 1
                 
         return result
+
+      
+"""102. Binary Tree Level Order Traversal"""
+# Use level to store *tree nodes* of current level
+def levelOrder(self, root):
+    if not root:
+        return []
+    ans, level = [], [root]
+    while level:
+        # put values of nodes in level to answer
+        ans.append([node.val for node in level])
+        temp = []
+        # Update level: put all non-null sub-nodes of levels into level
+        for node in level:
+            temp.extend([node.left, node.right])
+        level = [leaf for leaf in temp if leaf]
+    return ans
