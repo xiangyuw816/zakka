@@ -232,3 +232,22 @@ class Solution:
             return self.findKth(A[k / 2:], B, k - k / 2)
         return self.findKth(A, B[k / 2:], k - k / 2)
       
+"""153. Find Minimum in Rotated Sorted Array"""
+# use two pointers to find the rotated part
+# sorted array --> skip part of the array
+class Solution(object):
+    def findMin(self, nums):
+        l = 0
+        r = len(nums)-1
+        while l<r:
+            # sub-array is not rotated
+            if nums[l] < nums[r]:
+                return nums[l]
+              
+            mid = (l+r)//2
+            if nums[mid] > nums[r]:
+                l = mid + 1
+            else:
+                r = mid
+                
+        return nums[l]
