@@ -183,3 +183,52 @@ def levelOrder(self, root):
             temp.extend([node.left, node.right])
         level = [leaf for leaf in temp if leaf]
     return ans
+
+"""11. Container With Most Water"""
+# two pointers
+# TARGET: min(a[i], a[j]) * abs(i - j)
+# every time move the one with smaller value
+class Solution(object):
+    def maxArea(self, height):
+        left, right = 0, len(height) - 1
+        ans = 0
+        while left < right:
+            if height[left] < height[right]:
+                area = height[left] * (right - left)
+                left += 1
+            else:
+                area = height[right] * (right - left)
+                right -= 1
+            ans = max(ans, area) 
+        return ans
+      
+"""4. Median of Two Sorted Arrays"""
+# Use a more general function as helper
+class Solution:
+    def findMedianSortedArrays(self, A, B):
+        n = len(A) + len(B)
+        if n % 2 == 1:
+            return self.findKth(A, B, n / 2 + 1)
+        else:
+            smaller = self.findKth(A, B, n / 2)
+            bigger = self.findKth(A, B, n / 2 + 1)
+            return (smaller + bigger) / 2.0
+
+    def findKth(self, A, B, k):
+      # find the kth element in [A, B]
+      # divide & conquer
+        if len(A) == 0:
+            return B[k - 1] # k starts from 1 while index starts from 0
+        if len(B) == 0:
+            return A[k - 1]
+        if k == 1:
+            return min(A[0], B[0])
+        
+        a = A[k / 2 - 1] if len(A) >= k / 2 else None
+        b = B[k / 2 - 1] if len(B) >= k / 2 else None
+        
+        # len(B) < k/2 OR a < b --> no need to try A[:k/2]
+        if b is None or (a is not None and a < b):
+            return self.findKth(A[k / 2:], B, k - k / 2)
+        return self.findKth(A, B[k / 2:], k - k / 2)
+      
