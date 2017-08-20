@@ -123,6 +123,7 @@ class Solution:
         return -1, -1
       
 """"Sliding window problems / substring"""
+# https://discuss.leetcode.com/topic/68976/sliding-window-algorithm-template-to-solve-all-the-leetcode-substring-search-problem
 class Solution(object):
     def findAnagrams(self, string, target):
         result = []#  or int to save results
