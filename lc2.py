@@ -109,9 +109,9 @@ class Solution(object):
         return count
 
 """1. Two Sum"""
+# 3 sums: loop over num and target = -num.
 class Solution:
     def twoSum(self, nums, target):
-        # Write your code hereclass Solution:
         # dict = {'diff till target': index}
         map = {}
         for i in range(len(num)):
@@ -251,3 +251,27 @@ class Solution(object):
                 r = mid
                 
         return nums[l]
+
+"""DP"""
+"""139. Word Break"""
+# as long as ok[j] AND ok[j:i] in dict
+def wordBreak(self, s, words):
+    ok = [True]
+    for i in range(1, len(s)+1):
+        ok += any(ok[j] and s[j:i] in words for j in range(i)),
+    return ok[-1]
+
+  
+"""70. Climbing Stairs"""
+# how many *distinct* ways can you climb to the top
+# link function: f(n) = f(n-1) + f(n-2)
+# f(1) = 1, f(2) = 2  
+# Top down + memorization (dictionary)  
+def __init__(self):
+    self.dic = {1:1, 2:2}
+    
+def climbStairs(self, n):
+    if n not in self.dic:
+        self.dic[n] = self.climbStairs(n-1) + self.climbStairs(n-2)
+    return self.dic[n]
+  
