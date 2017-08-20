@@ -275,3 +275,18 @@ def climbStairs(self, n):
         self.dic[n] = self.climbStairs(n-1) + self.climbStairs(n-2)
     return self.dic[n]
   
+
+"""152. Maximum Product Subarray"""
+# max/min product for the current number is either the current number itself
+# or the max/min by the previous number times the current one
+class Solution:
+    def maxProduct(self, nums):
+        f, g = [], []
+        f.append(nums[0])
+        g.append(nums[0])
+        for i in xrange(1, len(nums)):
+            f.append(max(f[i-1]*nums[i], g[i-1]*nums[i], nums[i]))
+            g.append(min(f[i-1]*nums[i], g[i-1]*nums[i], nums[i]))
+        m = f[0]
+        for i in xrange(1, len(f)): m = max(m, f[i])
+        return m
