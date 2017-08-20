@@ -290,3 +290,25 @@ class Solution:
         m = f[0]
         for i in xrange(1, len(f)): m = max(m, f[i])
         return m
+
+      
+"""6. ZigZag Conversion"""
+class Solution(object):
+    def convert(self, s, numRows):
+      # Concerner Case
+        if numRows == 1 or len(s) < numRows:
+            return s
+        # initialize a list of strings to stand for elements in each row  
+        index = 0
+        down = True # control the direction to move index (+1 or -1)
+        L=['']*numRows
+
+        for char in s:
+            L[index]+=char
+            if index == numRows-1:
+                down = False
+            if index == 0:
+                down = True
+            index = index + 1 if down else index - 1
+
+        return ''.join(L)
