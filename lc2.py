@@ -320,3 +320,29 @@ class Solution(object):
 # stands for the possible outputs use 'a', 'e', ..., 'u' as end string with total length of n.
 # f(1) = [1,1,1,1,1]
 # f(n) = [f(n-1)1*num..., ..., ... ]
+
+
+from collections import Counter
+"""Counting Sort"""
+def get_topK(text, K):
+    words_freq = Counter(text.lower().split())
+    if not words_freq:
+        return
+
+    # create a list to store words and use index as the frequency
+    n = max(words_freq.values())
+    freq_list = [[] for _ in range(n)] # [[]]*n will create n copy of [] —> modified same time
+    for k,v in words_freq.items():
+        freq_list[v-1].append(k)
+
+    # get the topK words by traverse the list from the right side
+    res = []
+    freq = n
+    while len(res) < k and freq_list:
+        words = freq_list.pop()
+        # no need to check if words == []. If empty, will automatically skip when extend
+        res.extend([(x, freq) for x in sorted(words)[:K-len(res)]])
+        freq -= 1
+
+    for word, freq in res:
+        print('{0} {1}'.format(word, freq))
