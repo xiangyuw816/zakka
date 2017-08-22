@@ -313,3 +313,10 @@ class Solution(object):
             index = index + 1 if down else index - 1
 
         return ''.join(L)
+
+      
+"""Magical vowls"""
+# possible resutls are 5, so f(n) = [m1, m2, m3, m4, m5]
+# stands for the possible outputs use 'a', 'e', ..., 'u' as end string with total length of n.
+# f(1) = [1,1,1,1,1]
+# f(n) = [f(n-1)1*num..., ..., ... ]
