@@ -459,3 +459,36 @@ class Solution:
                             q.append((m+d1, n+d2))
     
         return num_islands
+
+"""130. Surrounded Regions"""
+# 1. find all O that's connected to the boarder and label as 'S'
+# 2. change all 'S' to 'O' and the rest as 'X'
+class Solution:
+    def surroundedRegions(self, board):
+        # corner case!!
+        if not board:
+            return []
+          
+        # find all boarder elements
+        nrow = len(board)
+        ncol = len(board[0])
+        if nrow == 1:
+            boarder = [(0,j) for j in range(ncol)]
+        elif ncol == 1:
+            boarder = [(i,0) for i in range(nrow)]
+        else:
+            boarder = [(i,j) for j in (0, ncol-1) for i in range(nrow)]
+            boarder.extend([(i,j) for i in (0, nrow-1) for j in range(1,ncol-1)])
+        
+        while boarder:
+            i,j = boarder.pop()
+            if 0<=i<nrow and 0<=j<ncol and board[i][j] == 'O':
+                board[i][j] = 'S'
+                boarder.extend([(i,j+1), (i,j-1), (i+1,j), (i-1,j)])
+                
+        for i in range(nrow):
+            for j in range(ncol):
+                board[i][j] = 'O' if board[i][j] == 'S' else 'X'
+                
+        return board
+      
