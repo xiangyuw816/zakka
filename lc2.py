@@ -346,3 +346,88 @@ def get_topK(text, K):
 
     for word, freq in res:
         print('{0} {1}'.format(word, freq))
+
+        
+"""547. Friend Circles"""
+# Union Find: finding circles in un-directed graph
+## Find: determine which subset an element is in (can be used to check if two elements belong to the same subset)
+## Union: join two subsets into a single subset
+class Solution(object):
+    def findCircleNum(self, M):
+        """
+        :type M: List[List[int]]
+        :rtype: int
+        """
+        ds = DisjointSet()
+
+        for i in range(len(M)):
+            ds.make_set(i)
+
+        for i in range(len(M)):
+            for j in range(len(M)):
+                if M[i][j] == 1:
+                    ds.union(i, j)
+
+        return ds.num_sets
+
+class Node(object):
+    def __init__(self, data, parent=None, rank=0):
+        self.data = data # the actual data element
+        self.parent = parent # pointer from child to parent
+        self.rank = rank # depth of the tree
+
+class DisjointSet(object):
+    def __init__(self):
+        self.map = {} # map element to its root node
+        self.num_sets = 0
+
+    def make_set(self, data):
+      """Initialization: only one element in a set
+        and parent points to itself, rank = 0
+      """
+        node = Node(data)
+        node.parent = node
+        self.map[data] = node
+        self.num_sets += 1
+
+    def union(self, data1, data2):
+      """Merge two sets into one
+        1. find the root node of both element (i.e. find_set: root will be the one point to itself)
+        2. compare rank: make parent the higher ranked one --> keep rank as small as possible
+        3. update parent rank (rank of non-root does not matter): if same rank: root rank +1 else max(rank)
+        4. path compression: make all non-root nodes point to root node directly (i.e. find_set_until)
+      """
+        node1 = self.map[data1]
+        node2 = self.map[data2]
+
+        parent1 = self.find_set_util(node1)
+        parent2 = self.find_set_util(node2)
+
+        if parent1.data == parent2.data:
+            return
+
+        if parent1.rank >= parent2.rank:
+            if parent1.rank == parent2.rank:
+                parent1.rank += 1
+            parent2.parent = parent1
+        else:
+            parent1.parent = parent2
+
+        self.num_sets -= 1
+
+
+    def find_set(self, data):
+      """Return an identity of a set which is usually an element in a set which acts as a rep of that set
+          e.g 1,2,3 belong to the same set and 1 is the rep, so find_set(1),find_set(2),find_set(3) will all return 1.
+      """
+        return self.find_set_util(self.map[data])
+
+    def find_set_util(self, node):
+      """Path compression: make all non-root nodes point to root node directly"""
+        parent = node.parent
+        if parent == node:
+            return parent
+
+        # along the way to find root, update the parent of all elements along the way to the root node.
+        node.parent = self.find_set_util(node.parent) # path compression
+        return node.parent
