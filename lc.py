@@ -732,7 +732,7 @@ class Solution(object):
             cur=nextIndex[cur]
         return cur
 
-# 200. Number of Islands
+
 # 289. Game of Life
 # 351. Android Unlock Patterns
 # 351. Android Unlock Patterns???
