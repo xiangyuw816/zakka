@@ -364,7 +364,7 @@ class Solution(object):
             ds.make_set(i)
 
         for i in range(len(M)):
-            for j in range(len(M)):
+            for j in range(i, len(M)): # diagonal, no need to start j from 0
                 if M[i][j] == 1:
                     ds.union(i, j)
 
