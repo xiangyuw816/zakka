@@ -431,3 +431,31 @@ class DisjointSet(object):
         # along the way to find root, update the parent of all elements along the way to the root node.
         node.parent = self.find_set_util(node.parent) # path compression
         return node.parent
+
+      
+"""200. Number of Islands"""
+# BFS: no need for visited Instead: change every visited to 0
+class Solution:
+    def numIslands(self, grid):
+        if not grid:
+            return 0
+    
+        num_islands = 0
+        nrow, ncol = len(grid), len(grid[0])
+        for i in range(nrow):
+            for j in range(ncol):
+                q = collections.deque([])
+                if grid[i][j]:
+                    grid[i][j] = 0
+                    num_islands += 1
+                    q.append((i,j))
+    
+                while q:
+                    m,n = q.popleft()
+                    # no need to check (m,n), already did outside the loop
+                    for d1,d2 in [(0,1),(0,-1),(1,0),(-1,0)]:
+                        if 0<=m+d1<nrow and 0<=n+d2<ncol and grid[m+d1][n+d2]:
+                            grid[m+d1][n+d2] = 0
+                            q.append((m+d1, n+d2))
+    
+        return num_islands
