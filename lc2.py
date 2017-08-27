@@ -699,3 +699,55 @@ class Solution:
                         zeroInDegree.append(j)
         
         return sum(degree) == 0
+
+      
+"""257. Binary Tree Paths"""
+# bfs + queue
+def binaryTreePaths2(self, root):
+    if not root:
+        return []
+    res, queue = [], collections.deque([(root, "")])
+    while queue:
+        node, ls = queue.popleft()
+        if not node.left and not node.right:
+            res.append(ls+str(node.val))
+        if node.left:
+            queue.append((node.left, ls+str(node.val)+"->"))
+        if node.right:
+            queue.append((node.right, ls+str(node.val)+"->"))
+    return res
+    
+# dfs recursively
+def binaryTreePaths(self, root):
+    if not root:
+        return []
+    res = []
+    self.dfs(root, "", res)
+    return res
+# if need to update the result, then make res as one of the input param of the dfs recursive function.
+def dfs(self, root, ls, res):
+    if not root.left and not root.right:
+        res.append(ls+str(root.val))
+    if root.left:
+        self.dfs(root.left, ls+str(root.val)+"->", res)
+    if root.right:
+        self.dfs(root.right, ls+str(root.val)+"->", res)
+        
+"""131. Palindrome Partitioning"""
+def partition(self, s):
+    res = []
+    self.dfs(s, [], res)
+    return res
+
+def dfs(self, s, path, res):
+  # s: string to be patitioned, path: already patitioned result, res: to put find result
+  # function: partition s and append it to path, and finally append path to res.
+    if not s:
+        res.append(path)
+        return
+    for i in range(1, len(s)+1):
+        if self.isPal(s[:i]):
+            self.dfs(s[i:], path+[s[:i]], res)
+    
+def isPal(self, s):
+    return s == s[::-1]
