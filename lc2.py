@@ -494,3 +494,30 @@ class Solution:
                 
         return board
       
+"""261. Graph Valid Tree"""
+class Solution:
+# Valid tree: 1) no cycle; 2) all connected
+    # BFS
+    def validTree(self, n, edges):
+        # given n nodes and no repeat, valid tree should have n-1 edges
+        if len(edges) != n - 1:
+            return False
+
+        neighbors = collections.defaultdict(list)
+        for u, v in edges:
+            neighbors[u].append(v)
+            neighbors[v].append(u)
+
+        visited = {}
+        queue = [0]
+        visited[0] = True
+        while queue:
+            cur = queue.pop()
+            visited[cur] = True
+            for node in neighbors[cur]:
+                if node not in visited:
+                    visited[node] = True
+                    queue.append(node)
+
+        # all connected
+        return len(visited) == n
