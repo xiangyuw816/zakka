@@ -124,7 +124,42 @@ class Solution:
       
 """"Sliding window problems / substring"""
 # https://discuss.leetcode.com/topic/68976/sliding-window-algorithm-template-to-solve-all-the-leetcode-substring-search-problem
+## move end pointer (one while loop) and if hit the target (one while loop) move begin pointer
+## quick template
+def solution(string, target):
+    # initialize
+    begin = end = 0
+    res = [] # depends
+    # CONCERNER CASE
+    # if target
+    still_need_dict = {}
+    for char in still_need_dict:
+        still_need_dict[char] += 1
+    counter = len(still_need_dict) # map size
+        
+    while end < len(string):
+        c = string[end]
+        if c in still_need_dict.keys():
+            still_need_dict[c] -= 1 # can be NEGATIVE
+            if still_need_dict[c] == 0:
+                counter -= 1
+                
+        while counter == 0: # when satisfy the condition, move begin pointer
+            temp_c = string[begin]
+            if c in still_need_dict.keys():
+                still_need_dict[temp_c] += 1
+                if still_need_dict[temp_c] > 0: # !!! condition is >0
+                    counter += 1
+                    
+            # update result
+            # pass
+            begin += 1
+            
+"""438. Find All Anagrams in a String"""
+# counter = len(map)
+# to update result: end - begin == len(target)
 class Solution(object):
+    # e.g input("cbaebabacd","abc") return [0, 6]
     def findAnagrams(self, string, target):
         result = []#  or int to save results
         if len(target)>len(string):
@@ -154,7 +189,7 @@ class Solution(object):
             # remove begin char
             while counter == 0: # different situations
             # keep move begin pointer for there's nothing qualified
-                tempc = string[begin]##
+                tempc = string[begin]
                 if tempc in still_need_dict.keys():
                     still_need_dict[tempc] += 1
                     if still_need_dict[tempc] > 0:
@@ -167,7 +202,118 @@ class Solution(object):
                 begin += 1
                 
         return result
+      
+"""76. Minimum Window Substring"""
+# use head & smallest_len to tract result
+# to update result: end - begin < smallest_len
+class Solution(object):
+    def minWindow(self, s, t):
+        """
+        :type s: str
+        :type t: str
+        :rtype: str
+        """
+        if len(s)<len(t):
+            return ''
+        head = 0
+        smallest_len = len(s)+1
+        still_need_dict = {} # what's still needed in order to get T
+        for char in t:
+            still_need_dict[char] = still_need_dict.get(char, 0) + 1
+        counter = len(still_need_dict)
+        end = 0
+        begin = 0 # each time move end pointer, update still_need_dict
+        # when still_need_dict empty: move begin pointer & update
+        # after finish move: compare current end-begin with len
+        # use head and len to maintain the result
+        while end < len(s):
+            c = s[end]
+            if c in still_need_dict.keys():
+                still_need_dict[c] -= 1
+                if still_need_dict[c] == 0:# it can be negative
+                    counter -= 1
+            end += 1
+            
+            while not counter:
+                temp_c = s[begin]
+                if temp_c in still_need_dict.keys():
+                    still_need_dict[temp_c] += 1
+                    if still_need_dict[temp_c]>0:
+                        counter += 1
 
+                if end - begin < smallest_len:
+                    head = begin
+                    smallest_len = end - begin
+
+                begin += 1
+                
+        if smallest_len > len(s):
+            return ''
+        return s[head: head+smallest_len]
+      
+"""3. Longest Substring Without Repeating Characters"""
+# counter: num of duplicated chars
+# map: track char frequency in the sub-string
+    def lengthOfLongestSubstring(self, s):
+        # move end pointer and update counter
+        # if counter > 0: move begin pointer until no dups in s[begin:end]
+        map = {}
+        begin = 0
+        end = 0
+        counter = 0
+        d = 0 # final result
+        while end < len(s):
+            c = s[end]
+            map[c] = map.get(c, 0) + 1
+            if map[c] > 1:# if there's dup char
+                counter += 1
+            end += 1
+            
+            while counter>0:
+                temp_c = s[begin]
+                if map[temp_c] > 1:
+                    counter -= 1
+                map[temp_c] -= 1
+                begin += 1
+            # update result only when there's no dups at all    
+            d = max(d, end - begin)
+            
+        return d
+      
+"""159. Longest Substring with At Most Two Distinct Characters"""
+# counter: num of distinct chars
+# begin++ needs to be inside while loop
+# condition: when counter > 2, to move begin pointer
+class Solution(object):
+    def lengthOfLongestSubstringTwoDistinct(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        d = 0
+        begin = 0
+        end = 0
+        tf = {}
+        counter = 0
+        # tf: track tf of sub-string
+        # counter: num of distinct chars
+        while end < len(s):
+            c = s[end]
+            if tf.get(c, 0) == 0:
+                counter += 1
+            tf[c] = tf.get(c, 0) + 1
+            end += 1
+            
+            while counter > 2:
+                temp_c = s[begin]
+                if tf[temp_c] == 1:
+                    counter -= 1
+                tf[temp_c] -= 1
+                begin += 1
+                
+            d = max(d, end-begin)
+            
+        return d
       
 """102. Binary Tree Level Order Traversal"""
 # Use level to store *tree nodes* of current level
