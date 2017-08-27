@@ -380,7 +380,7 @@ class Node(object):
 
 class DisjointSet(object):
     def __init__(self):
-        self.map = {} # map element to its root node
+        self.map = {} # map element to its node
         self.num_sets = 0
 
     def make_set(self, data):
