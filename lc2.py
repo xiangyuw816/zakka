@@ -352,6 +352,8 @@ def get_topK(text, K):
 # Union Find: finding circles in un-directed graph
 ## Find: determine which subset an element is in (can be used to check if two elements belong to the same subset)
 ## Union: join two subsets into a single subset
+
+# different from num_islands e.g. when M[0, len(M)-1] = 1
 class Solution(object):
     def findCircleNum(self, M):
         """
