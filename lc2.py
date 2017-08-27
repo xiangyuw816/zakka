@@ -667,3 +667,35 @@ class Solution:
 
         # all connected
         return len(visited) == n
+
+"""207. Course Schedule"""      
+class Solution:
+    # BFS with toplogical sorting
+    # http://www.cnblogs.com/grandyang/p/4484571.html
+    # put all nodes with 0 indegree into queue
+    # iterate over queue and update those connected nodes with degree--
+    # after all iteration, degree list should be 0
+    def canFinish(self, numCourses, prerequisites):
+        zeroInDegree = collections.deque([])
+        # initialize a list of store the indegree of each node
+        degree = [0] * numCourses
+        for pre in prerequisites:
+            degree[pre[1]] += 1
+        # initialize queue
+        for i in range(len(degree)):
+            if degree[i] == 0:
+                zeroInDegree.append(i)
+                
+        if not zeroInDegree:
+            return False
+        
+        while zeroInDegree:
+            course = zeroInDegree.popleft()
+            # go over prerequisites to update indegree
+            for i,j in prerequisites:
+                if i == course:
+                    degree[j] -= 1
+                    if degree[j] == 0:
+                        zeroInDegree.append(j)
+        
+        return sum(degree) == 0
