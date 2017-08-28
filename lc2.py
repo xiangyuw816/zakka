@@ -818,3 +818,17 @@ class Solution(object):
             return
         for i in range(len(elements)):
             self.helper(elements[:i]+elements[i+1:], path+[elements[i]], res)
+
+            
+"""89. Gray Code"""
+# backtracking with iteration
+## from f(n-1) to f(n): only need to [x+j for j in ('0','1') for x in f(n-1)]
+def solution(n):
+    rs=[0]
+    for i in range(n):
+        size=len(rs)
+        for k in range(size-1, -1, -1):
+            # a<<b: add b*0 to the right of a
+            # |: or operator -> decimal
+            rs.append(rs[k]|1<<i)
+    return rs
