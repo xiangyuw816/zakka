@@ -438,11 +438,25 @@ class Solution:
         for i in xrange(1, len(f)): m = max(m, f[i])
         return m
 
+"""120. Triangle"""      
+# go from bottom to top
+# only need a list of minlen, because after calculation the result of lower paths does not matter
+class Solution(object):
+    def minimumTotal(self, triangle):
+        n = len(triangle)
+        minlen = triangle[n-1][:]# the minimum sum from current node to its children-path
+        for layer in range(n-2, -1, -1): # iterate by layer
+            for i in range(layer+1): # for each node in this layer
+                # find the smaller of two children and sum the current value
+                minlen[i] = min(minlen[i], minlen[i+1])+triangle[layer][i]
+                
+        return minlen[0]
+      
       
 """6. ZigZag Conversion"""
 class Solution(object):
     def convert(self, s, numRows):
-      # Concerner Case
+      # Corner Case
         if numRows == 1 or len(s) < numRows:
             return s
         # initialize a list of strings to stand for elements in each row  
