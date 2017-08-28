@@ -717,6 +717,17 @@ def binaryTreePaths2(self, root):
             queue.append((node.right, ls+str(node.val)+"->"))
     return res
     
+    
+"""Backtracking & recursion DFS Template
+def helper(sth, path, res)
+# recursive call: declare exit condition
+# only focus on current step -> update one element in sth to path
+
+def solutioin(whole_sth):
+    res = []
+    helper(whole_sth, [], res)
+    return res
+"""    
 # dfs recursively
 def binaryTreePaths(self, root):
     if not root:
@@ -751,3 +762,59 @@ def dfs(self, s, path, res):
     
 def isPal(self, s):
     return s == s[::-1]
+
+"""17. Letter Combinations of a Phone Number"""
+def letterCombinations(self, digits):
+    if not digits:
+        return []
+    dic = {"2":"abc", "3":"def", "4":"ghi", "5":"jkl", "6":"mno", "7":"pqrs", "8":"tuv", "9":"wxyz"}
+    res = []
+    self.dfs(digits, dic, 0, "", res)
+    return res
+    
+# replace digits[index:] with the dictionary value and add to path    
+def dfs(self, digits, dic, index, path, res):
+    if len(path) == len(digits):
+        res.append(path)
+        return 
+    for i in xrange(index, len(digits)):
+        for j in dic[digits[i]]:
+            # move index and update path
+            self.dfs(digits, dic, i+1, path+j, res)
+         
+"""22. Generate Parentheses"""
+# generate all possible pairs of valid ()
+## another method: DP.
+class Solution:
+    # append #l '(' and #r ')' to item and append it to res.
+    def helpler(self, l, r, item, res):
+        if r < l: # num ')' inserted > num '(' inserted
+            return # invalid - skip
+        if l == 0 and r == 0: # all '('')' inserted
+            res.append(item)
+        if l > 0:
+            self.helpler(l - 1, r, item + '(', res)
+        if r > 0:
+            self.helpler(l, r - 1, item + ')', res)
+    
+    def generateParenthesis(self, n):
+        if n == 0:
+            return []
+        res = []
+        self.helpler(n, n, '', res)
+        return res
+   
+"""46. Permutations"""  
+class Solution(object):
+    def permute(self, nums):
+        res = []
+        self.helper(nums, [], res)
+        return res
+      
+    # permutate elements and add them to path, and append res.
+    def helper(self, elements, path, res):
+        if not elements:
+            res.append(path)
+            return
+        for i in range(len(elements)):
+            self.helper(elements[:i]+elements[i+1:], path+[elements[i]], res)
