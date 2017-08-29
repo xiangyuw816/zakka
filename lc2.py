@@ -846,3 +846,17 @@ def solution(n):
             # |: or operator -> decimal
             rs.append(rs[k]|1<<i)
     return rs
+
+""" 387. First Unique Character in a String""""
+# go over list to obtain tf dict
+# go over the string to return the first index with frequency equal to 1.
+# As to find the 1st element, so just iterate from beginning to end!
+def sol(string):
+    tf = {}
+    for i in range(len(string)):
+        tf[string[i]] = tf.get(string[i], 0) + 1
+    
+    for i in range(len(string)):
+        if tf[string[i]] == 1:
+            return i
+    return -1
