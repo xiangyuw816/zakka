@@ -860,3 +860,18 @@ def sol(string):
         if tf[string[i]] == 1:
             return i
     return -1
+
+  
+"""Find intersections between several lists"""
+# e.g. [1,2,3,2,5], [1,2,2], [2,3,2,6] --> [2,2,3]
+# Use the list with least length to go over other lists.
+def solution(a1,a2,a3):
+    res = []
+    # suppose a2 is the one with smallest length
+    tf1 = Counter(a1) # build tf hashtable
+    for term in tf2.keys():
+        t = min(tf1.get(term,0), tf2[term], tf3.get(term, 0))
+        if t > 0:
+            res.extend([term]*t)
+    
+    return res
