@@ -54,6 +54,8 @@ def lengthLongestPath(self, input):
     return maxlen
 
 # 228. Summary Ranges
+# Input: [0,1,2,4,5,7]
+# Output: ["0->2","4->5","7"]
 def summaryRanges(self, nums):
     ranges = []
     for n in nums:
@@ -64,6 +66,7 @@ def summaryRanges(self, nums):
     return ['->'.join(map(str, r)) for r in ranges]
 
 # 163. missing ranges
+# [0, 1, 3, 50, 75], lower = 0 and upper = 99, return ["2", "4->49", "51->74", "76->99"]
 class Solution(object):
     def findMissingRanges(self, nums, lower, upper):
         """
@@ -87,6 +90,7 @@ class Solution(object):
         return res
     
 ##    280. Wiggle Sort
+# nums, reorder it in-place such that nums[0] <= nums[1] >= nums[2] <= nums[3]..
 # i even: num[i]<=num[i-1]
 # i odd: num[i]>=num[i-1]
 ## if i even, we have num[i-1]>=num[i-2]
@@ -100,6 +104,9 @@ class Solution(object):
                 nums[i], nums[i - 1] = nums[i - 1], nums[i]
 
 ## 259. 3Sum Smaller
+# Given an array of n integers nums and a target, 
+# find the number of index triplets i, j, k with 0 <= i < j < k < n that 
+# satisfy the condition nums[i] + nums[j] + nums[k] < target
 # first sort
 # i:0 ++, j:k-1 --, k: range(len), i<j
 # After sorting, if (i, j, k) is a valid triple, then (i, j-1, k), ..., (i, i+1, k) are also valid triples. count= j-i 
@@ -187,6 +194,7 @@ def longestConsecutive(self, root):
     return ans
 
 # 394. Decode String
+# s = "3[a]2[bc]", return "aaabcbc".
 ## DFS, stack
 # stack: ["string", num]
 ## if digit: num
@@ -269,6 +277,9 @@ class Solution(object):
             return res
 
 # 281. Zigzag Iterator
+# v1 = [1, 2]
+# v2 = [3, 4, 5, 6]
+# return: 1,3,2,4,5,6
 class ZigzagIterator(object):
 #[1,2,3],[4,5]
 ## use queue: popleft the whole v1 and append back if v1 not empty.
