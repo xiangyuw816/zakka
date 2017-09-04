@@ -926,3 +926,24 @@ def productExceptSelf(nums):
         output[i] = output[i] * p
         p *= nums[i]
     return output
+
+  
+"""75. Sort 4 Colors"""
+# [0,i) [i, j) [j, k) are 0s, 1s and 2s sorted in place for [0,k)
+# suppose already sorted, now add a new 1 -> j,k both needs to add 1.
+def solution(nums):
+    # [0,i), [i,j), [j,k), [k:] - 0,1,2,3
+    i = j = k = 0
+    for ind in range(len(nums)):
+        v = nums[ind]
+        nums[ind] = 3
+        if v < 3:
+            nums[k] = 2
+            k += 1
+        if v < 2:
+            nums[j] = 1
+            j += 1
+        if v == 0:
+            nums[i] = 0
+            i += 1
+    return nums
