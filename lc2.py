@@ -960,6 +960,7 @@ def firstMissingPositive(nums):
         # situations to ignore num
         if nums[i] == i+1 or nums[i] <= 0 or nums[i] > len(nums):
             i += 1
+        # for a valid num, put nums[i] to its correct position: i.e. for num 5 swap it with num[4]
         elif nums[i] != nums[nums[i]-1]:
             swap(nums, i, nums[i]-1)
         else:
@@ -969,3 +970,19 @@ def firstMissingPositive(nums):
         if nums[i] != i + 1:
             return i + 1
     return n + 1
+
+# reverse the whole string and then reverse each word  
+void reverseWords(string &s) {
+    reverse(s.begin(), s.end());
+    int storeIndex = 0;
+    for (int i = 0; i < s.size(); i++) {
+        if (s[i] != ' ') {
+            if (storeIndex != 0) s[storeIndex++] = ' ';
+            int j = i;
+            while (j < s.size() && s[j] != ' ') { s[storeIndex++] = s[j++]; }
+            reverse(s.begin() + storeIndex - (j - i), s.begin() + storeIndex);
+            i = j;
+        }
+    }
+    s.erase(s.begin() + storeIndex, s.end());
+}
