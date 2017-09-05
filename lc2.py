@@ -947,3 +947,25 @@ def solution(nums):
             nums[i] = 0
             i += 1
     return nums
+
+"""41. First Missing Positive"""  
+def swap(nums, i, j):
+    temp = nums[i]
+    nums[i] = nums[j]
+    nums[j] = temp
+def firstMissingPositive(nums):
+    """If num > len(nums): there should be a number that's smaller than n that's missing"""
+    i = 0
+    while i < len(nums):
+        # situations to ignore num
+        if nums[i] == i+1 or nums[i] <= 0 or nums[i] > len(nums):
+            i += 1
+        elif nums[i] != nums[nums[i]-1]:
+            swap(nums, i, nums[i]-1)
+        else:
+            i += 1
+        
+    for i in range(len(nums)):
+        if nums[i] != i + 1:
+            return i + 1
+    return n + 1
