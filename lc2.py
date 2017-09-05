@@ -1038,3 +1038,22 @@ class Solution(object):
         if root:
             return dfs(root)[1]
         return 0
+
+"""128. Longest Consecutive Sequence"""
+# keep track of the sequence length and store that in the boundary points of the sequence
+def longestConsecutive(nums):
+    res = 0
+    dic = {}
+    for n in nums:
+        if n not in dic.keys():
+            # update keys
+            left = dic.get(n-1, 0)
+            right = dic.get(n+1, 0)
+            total = left + right+ 1
+            dic[n] = total
+            # update max
+            res = max(res, total)
+            # extend length to boundaries
+            dic[n-left] = total
+            dic[n+right] = total
+    return res
