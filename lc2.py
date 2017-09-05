@@ -971,18 +971,52 @@ def firstMissingPositive(nums):
             return i + 1
     return n + 1
 
+"""151. Reverse Words in a String"""
 # reverse the whole string and then reverse each word  
-void reverseWords(string &s) {
-    reverse(s.begin(), s.end());
-    int storeIndex = 0;
-    for (int i = 0; i < s.size(); i++) {
-        if (s[i] != ' ') {
-            if (storeIndex != 0) s[storeIndex++] = ' ';
-            int j = i;
-            while (j < s.size() && s[j] != ' ') { s[storeIndex++] = s[j++]; }
-            reverse(s.begin() + storeIndex - (j - i), s.begin() + storeIndex);
-            i = j;
-        }
-    }
-    s.erase(s.begin() + storeIndex, s.end());
-}
+class solution:
+    def reverseWords(self, s):
+        """s should be a list"""
+        # Reverse the whole string and then reverse word by word
+        self.reverse(s, 0, len(s) - 1)
+
+        beg = 0
+        # by checking empty space
+        for i in xrange(len(s)):
+            if s[i] == ' ':
+                self.reverse(s, beg, i-1)
+                beg = i + 1
+        # reverse the last word
+        self.reverse(s, beg, len(s)-1)
+
+    def reverse(self, s, start, end):
+        while start < end:
+            s[start], s[end] = s[end], s[start]
+            start += 1
+            end -= 1
+            
+"""227. Basic Calculator II"""
+def calculate(s):
+    # use stack to collect the result of each sign
+    if not s:
+        return "0"
+    stack, num, sign = [], 0, "+"
+    for i in xrange(len(s)):
+        if s[i].isdigit(): # get number
+            num = num*10+ord(s[i])-ord("0")
+        # get signs
+        if (not s[i].isdigit() and not s[i].isspace()) or i == len(s)-1:
+            if sign == "-":
+                stack.append(-num)
+            elif sign == "+":
+                stack.append(num)
+            elif sign == "*":
+                stack.append(stack.pop()*num)
+            else: # /
+                tmp = stack.pop()
+                if tmp//num < 0 and tmp%num != 0:
+                    stack.append(tmp//num+1)
+                else:
+                    stack.append(tmp//num)
+            sign = s[i]
+            num = 0
+    return sum(stack)
