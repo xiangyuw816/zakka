@@ -1085,3 +1085,5 @@ def isOneEditDistance(s, t):
     # already has s[:n] == t[:n], now only possibility is one more char left
     return abs(len(s) - len(t)) == 1
   
+# when it's about group together:
+# one way is to use hashtap and then return dict.values().
