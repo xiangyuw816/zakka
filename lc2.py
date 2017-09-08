@@ -1069,3 +1069,19 @@ for i in elements:
     else:
         ct = 0
         
+"""161. One Edit Distance"""
+# 3 possibilities: 1) equal length: replace one char; 2) remove one char from the longer string.
+## only need to check the first char that's different!!
+def isOneEditDistance(s, t):
+    n = min(len(s), len(t))
+    for i in range(n):
+        if s[i] != t[i]:
+            if len(s) == len(t): # situation 1) i.e. the rest part are the same
+                return s[i+1:] == t[i+1:]
+            elif len(s) > len(t): # i.e. remove one char
+                return s[i+1:] == t[i:]
+            else:
+                return s[i:] == t[i+1:]
+    # already has s[:n] == t[:n], now only possibility is one more char left
+    return abs(len(s) - len(t)) == 1
+  
