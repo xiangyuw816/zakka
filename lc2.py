@@ -594,7 +594,8 @@ class DisjointSet(object):
         node.parent = self.find_set_util(node.parent) # path compression
         return node.parent
 
-      
+
+# BFS: stack could be [(x,y, string, step)] -- not limited to only pos!!!
 """200. Number of Islands"""
 # BFS: no need for visited Instead: change every visited to 0
 class Solution:
@@ -1057,3 +1058,14 @@ def longestConsecutive(nums):
             dic[n-left] = total
             dic[n+right] = total
     return res
+
+  
+"""Find 5 consecutive 0s in a list"""
+# every time when it's not 0, reset ct.
+ct = 0
+for i in elements:
+    if i == 0:
+        ct += 1
+    else:
+        ct = 0
+        
