@@ -159,3 +159,18 @@ class RandomizedSet(object):
     def getRandom(self):
         return self.nums[random.randint(0, len(self.nums) - 1)]
     
+
+"""254. Factor Combinations"""
+# split n to [i, n/i] and then further split n/i
+# use i to control duplicates i.e. non-descending
+# if no i: for n = 16, [2,2,4] and [4,2,2] will both occur
+def getFactors(n):
+    def factor(n, i, path, res):
+    # split n by >=i and append it with path to res
+        while i * i <= n:
+            if n % i == 0:
+                res.append(path + [i, n//i])
+                factor(n//i, i, path+[i], res)
+            i += 1
+        return res
+    return factor(n, 2, [], [])
