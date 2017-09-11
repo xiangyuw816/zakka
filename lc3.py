@@ -129,3 +129,33 @@ def repeatedSubstringPattern(self, str):
 """277. Find the Celebrity"""
 # 1. find celebrity candidate, similar to find min
 # 2. verify this candidate: if all(!s/he knows) = True and all knows candidate
+
+
+"""380. Insert Delete GetRandom O(1)"""
+# list [vals] , dic {val: index in list}
+## when remove a value, copy the last value to that position (also update dict) and list.pop()
+import random
+class RandomizedSet(object):
+
+    def __init__(self):
+        self.nums, self.pos = [], {}
+        
+    def insert(self, val):
+        if val not in self.pos:
+            self.nums.append(val)
+            self.pos[val] = len(self.nums) - 1
+            return True
+        return False
+        
+
+    def remove(self, val):
+        if val in self.pos:
+            idx, last = self.pos[val], self.nums[-1]
+            self.nums[idx], self.pos[last] = last, idx
+            self.nums.pop(); self.pos.pop(val, 0)
+            return True
+        return False
+            
+    def getRandom(self):
+        return self.nums[random.randint(0, len(self.nums) - 1)]
+    
