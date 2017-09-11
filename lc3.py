@@ -40,3 +40,92 @@ def maxSubArrayLen(nums, k):
             print(i, mp, i-mp[acc-k])
             ans = max(ans, i-mp[acc-k])
     return ans
+
+
+"""48. Rotate Image"""
+'''* clockwise rotate
+ * first reverse up to down, then swap the symmetry 
+ * 1 2 3     7 8 9     7 4 1
+ * 4 5 6  => 4 5 6  => 8 5 2
+ * 7 8 9     1 2 3     9 6 3'''
+a[::-1]
+'''anticlockwise rotate
+ * first reverse left to right, then swap the symmetry
+ * 1 2 3     3 2 1     3 6 9
+ * 4 5 6  => 6 5 4  => 2 5 8
+ * 7 8 9     9 8 7     1 4 7'''
+[x[::-1] for x in a]
+
+
+"""366. Find Leaves of Binary Tree""" # --> need to test
+# DFS: to find the order of each node
+class Solution(object):
+    def __init__(self):
+        self.dic = collections.defaultdict(list)
+        
+    def findLeaves(self, root):
+        def order(root):
+            """1. Record root's level to dic; 2. return root's level
+            dic: {level: [node.val]}"""
+            if not root:
+                return 0
+            left = order(root.left, dic)
+            right = order(root.right, dic)
+            lev = max(left, right) + 1
+            self.dic[lev] += root.val,
+            return lev
+        
+        ret = []
+        order(root)
+        for i in range(1, len(self.dic) + 1):
+            ret.append(self.dic[i])
+        return ret
+    
+    
+"""339. Nested List Weight Sum"""
+# {level: [elements]}
+# level: how many times until the element pop out
+class Solution(object):
+    def __init__(self):
+        self.dic = defaultdict(list)
+        
+    def solution(self, ls):
+        self.helper(ls, 1)
+        res = 0
+        for k, v in self.dic.items():
+            res += sum(x*k for x in v)
+        return res
+        
+    def helper(self, ls, level):
+        # update ls to self.dic based on level
+        while ls:
+            temp = ls.pop(0)
+            if not isinstance(temp, list):
+                self.dic[level] += [temp]
+            else:
+                self.helper(temp, level+1)
+   
+# Method2: sum along the way
+def depthSum(nestedList):
+    def DFS(nestedList, depth):
+        """sum over the nestedList given initial depth level"""
+        temp_sum = 0
+        for member in nestedList:
+            if isinstance(member, int):
+                temp_sum += member * depth
+            else:
+                temp_sum += DFS(member,depth+1)
+        return temp_sum
+    return DFS(nestedList,1)
+
+
+"""459. Repeated Substring Pattern"""
+# If we repeat the string, then SS=SpSpSpSp.
+# Destroying first and the last pattern by removing each character, we generate a new S2=SxSpSpSy
+def repeatedSubstringPattern(self, str):
+    return str in (2 * str)[1:-1]
+
+
+"""277. Find the Celebrity"""
+# 1. find celebrity candidate, similar to find min
+# 2. verify this candidate: if all(!s/he knows) = True and all knows candidate
