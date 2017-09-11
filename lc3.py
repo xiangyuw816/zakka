@@ -174,3 +174,13 @@ def getFactors(n):
             i += 1
         return res
     return factor(n, 2, [], [])
+
+
+"""249	Group Shifted Strings"""
+# use %26 to get same pattern for 'zab', 'abc'
+from collections import defaultdict
+def groupStrings(strings):
+    dic = defaultdict(list)
+    for s in strings:
+        dic[tuple((ord(c) - ord(s[0])) % 26 for c in s)].append(s)
+    return dic.values()
