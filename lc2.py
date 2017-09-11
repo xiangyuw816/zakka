@@ -400,6 +400,33 @@ class Solution(object):
         return nums[l]
 
 """DP"""
+# one method to formulate DP problem:
+## helper: the target value when sth ends at position i.
+
+"""the longest increasing sequence"""
+# f[n]: if the sequence *ends at n*, the longest sequence possible
+# f[n] = max(f[i-1] + 1 for i in range(n) if array[i-1] < array[n])
+## the list inside max can be empty
+def lis(ls):
+    res = [0]*len(ls)
+    for i in range(len(ls)):
+        temp = [res[j] for j in range(i) if ls[j]<ls[i]]
+        res[i] = max(temp) + 1 if temp else 1
+    return max(res)
+
+
+# Maximum Sum Increasing Subsequence
+# f[n] = max(f[i-1] + array[n] for i in range(n) if array[i-1] < array[n])
+## the list inside max can be empty
+def lis(ls):
+    res = [0]*len(ls)
+    for i in range(len(ls)):
+        temp = [res[j] for j in range(i) if ls[j]<ls[i]]
+        res[i] = max(temp) + ls[i] if temp else ls[i]
+    return max(res)
+
+  
+  
 """139. Word Break"""
 # as long as ok[j] AND ok[j:i] in dict
 def wordBreak(self, s, words):
@@ -437,6 +464,39 @@ class Solution:
         m = f[0]
         for i in xrange(1, len(f)): m = max(m, f[i])
         return m
+      
+      
+"""152. Maximum Product Subarray"""
+# two negatives treated as one positive
+# only two patterns: AbCd or aAbCd
+def maxProduct(nums):
+    front_prod = 1
+    back_prod = 1
+    res = 0
+    n = len(nums)
+    for i in range(n):
+        front_prod *= nums[i]
+        back_prod *= nums[n-i-1]
+        res = max(res, max(front_prod, back_prod))
+        front_prod = 1 if front_prod == 0 else front_prod
+        back_prod = 1 if front_prod == 0 else back_prod
+    return res
+
+def maxProduct(nums):
+    # imax, imin: current max/min that ends at i
+    # on adding new i: if num[i] > 0, num[i]*imax else num[i]*imin or maybe itself
+    res = nums[0]
+    imax = imin = nums[0]
+    for i in range(1, len(nums)):
+        if nums[i] < 0:
+            imax, imin = imin, imax
+        
+        imax = max(nums[i], num[i]*imax)
+        imin = min(nums[i], num[i]*imin)
+
+        res =max(res, imax)
+    return res
+  
 
 """120. Triangle"""      
 # go from bottom to top
