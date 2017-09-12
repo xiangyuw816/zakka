@@ -25,6 +25,7 @@ Output: tensorflow
 Example 3: {{"b", "c"}, {"c", "d"}, {"a", "b"}, {"d", "e"}, {"e","c"}, {"f", "g"}} Ouput: f ``` 
 
 """44. Wildcard Matching"""
+# http://yucoding.blogspot.com/2013/02/leetcode-question-123-wildcard-matching.html
 class Solution:
 # ?: match a single char; *: match anything
     def isMatch(self, s, p):
