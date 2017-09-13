@@ -27,6 +27,16 @@ class solution():
         return False
 
     
+"""290. Word Pattern"""
+class Solution(object):
+    def wordPattern(self, pattern, str):
+        # if one unique p-word pair exists
+        # i.e. ('abba', 'dog dog dog dog') ('aaaa', 'mi ao mi ao') not working
+        s = str.split()
+        t = pattern
+        return len(set(zip(s,t))) == len(set(s)) == len(set(t)) and len(s) == len(t)
+    
+    
 """Maximum Size Subarray Sum Equals k"""
 # continuous sub-array
 def maxSubArrayLen(nums, k):
