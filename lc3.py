@@ -184,3 +184,69 @@ def groupStrings(strings):
     for s in strings:
         dic[tuple((ord(c) - ord(s[0])) % 26 for c in s)].append(s)
     return dic.values()
+
+
+"""36. Valid Sudoku"""
+class Solution(object):
+    def isValidSudoku(self, board):
+        # use a set to maintain those num already shown up with format:
+        # num + ' in row' + i, num + ' in col' + j, num + ' in block (i/3,j/3)'
+        records = set()
+        for i in range(len(board)):
+            for j in range(len(board)):
+                num = board[i][j]
+                if num != '.':
+                    if '{} in row {}'.format(num, i) in records or '{} in col {}'.format(num, j) in records or '{} in block ({}, {})'.format(num, i//3,j//3) in records:
+                        return False
+                    
+                    records.add('{} in row {}'.format(num, i))
+                    records.add('{} in col {}'.format(num, j))
+                    records.add('{} in block ({}, {})'.format(num, i//3,j//3))
+                    
+        return True
+
+
+"""54	Spiral Matrix"""
+# use nrow != ncol as test case
+class Solution(object):
+    def spiralOrder(self, matrix):
+        """
+        :type matrix: List[List[int]]
+        :rtype: List[int]
+        """
+        if not matrix:
+            return []
+        res = []
+        row_begin, row_end = 0, len(matrix) - 1
+        col_begin, col_end = 0, len(matrix[0]) - 1
+        while row_begin <= row_end and col_begin <= col_end:
+            # traverse to right
+            for i in range(col_begin, col_end+1):
+                res.append(matrix[row_begin][i])
+            row_begin += 1
+            # traverse to bottom
+            for j in range(row_begin, row_end+1):
+                res.append(matrix[j][col_end])
+            col_end -= 1
+            # traverse to left
+            for i in range(col_end, col_begin-1, -1):
+                res.append(matrix[row_end][i])
+            row_end -= 1
+            # traverse to upper
+            for j in range(row_end, row_begin-1, -1):
+                res.append(matrix[j][col_begin])
+            col_begin += 1
+        return res
+                
+        
+"""49. Group Anagrams"""
+class Solution(object):
+    def groupAnagrams(self, strs):
+        # Anagrams are the same when sorted, so use sorted string as the key
+        # can improve the time complexity by using sorting algo like counting sort
+        dic = collections.defaultdict(list)
+        for s in strs:
+            dic[''.join(sorted(s))].append(s)
+            
+        return dic.values()
+        
