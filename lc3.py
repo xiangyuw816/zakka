@@ -260,3 +260,34 @@ class Solution(object):
             
         return dic.values()
         
+
+"""251. Flatten 2D Vector"""
+# no need for iterators, just update row,col index
+# !! important case: [[],[],[-1]], if encounter [], need to continue to check --> while loop
+class Vector2D(object):
+    def __init__(self, vec2d):
+        self.row = 0
+        self.col = 0
+        self.vec = vec2d
+
+    def next(self):
+        # The first time to call next should return the 1st element
+        if self.hasNext:
+            res = self.vec[self.row][self.col]
+            self.col += 1
+            return res
+
+    def hasNext(self):
+        """
+        if hasNext: update index else return False
+        - as long as row is not out of range, we need to continue checking
+        - if found one valid index, just return to break the loop
+        """
+        while self.row < len(self.vec):
+            if self.col < len(self.vec[self.row]):
+                return True
+            
+            self.row += 1
+            self.col = 0
+            
+        return False
