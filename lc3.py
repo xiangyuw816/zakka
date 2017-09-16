@@ -291,3 +291,17 @@ class Vector2D(object):
             self.col = 0
             
         return False
+
+    
+"""325. Maximum Size Subarray Sum Equals k"""
+# mp: {accumulate_value: left-most index}
+def maxSubArrayLen(self, nums, k):
+    ans, acc = 0, 0 # answer and the accumulative value of nums
+    mp = {0:-1} # initialize 0! helpful when e.g. [1,-1]
+    for i in xrange(len(nums)):
+        acc += nums[i]
+        if acc not in mp: # don't need to update value of dict, because we need the max size i.e. start from left-most
+            mp[acc] = i 
+        if acc-k in mp:
+            ans = max(ans, i-mp[acc-k]) # sum(nums[acc-k+1, i]) = k
+    return ans
