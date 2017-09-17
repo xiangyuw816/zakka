@@ -406,3 +406,19 @@ def helper(self, node, prev):
     after = node.next
     node.next = prev
     return self.helper(after, node)
+
+
+"""658. Find K Closest Elements"""
+class Solution(object):
+# to find the start point of sub-array
+    def findClosestElements(self, arr, k, x):
+        l, r = 0, len(arr) - k
+        while l < r:
+            mid = (l+r)//2
+            # mid+k is the start of right half
+            if x - arr[mid] > arr[mid+k] - x:
+                l = mid + 1
+            else:
+                r = mid
+        return arr[l:l+k]
+    
