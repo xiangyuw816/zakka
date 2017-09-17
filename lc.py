@@ -57,24 +57,19 @@ def lengthLongestPath(self, input):
 # Input: [0,1,2,4,5,7]
 # Output: ["0->2","4->5","7"]
 def summaryRanges(self, nums):
-    ranges = []
+    ranges = [] # [[0,2],[4,5],[7]]
     for n in nums:
         # increment >1: add new list
         if not ranges or n > ranges[-1][-1] + 1:
             ranges += [],
-        ranges[-1][1:] = n,
+        ranges[-1][1:] = [n] # if a = [], then a[1] will be out of range but a[1:] will work!
     return ['->'.join(map(str, r)) for r in ranges]
 
 # 163. missing ranges
 # [0, 1, 3, 50, 75], lower = 0 and upper = 99, return ["2", "4->49", "51->74", "76->99"]
 class Solution(object):
+# append upper bound to the nums list!!!
     def findMissingRanges(self, nums, lower, upper):
-        """
-        :type nums: List[int]
-        :type lower: int
-        :type upper: int
-        :rtype: List[str]
-        """
         # nums[i]-nums[i-1]==2: add nums[i]-1
         # nums[i]-nums[i-1]>2: add nums[i-1]+1 -> nums[i]-1
         ## use pre to present nums[i-1]
