@@ -394,3 +394,15 @@ class MinStack:
             return None
         return self.q[-1][1]
         
+
+"""206. Reverse Linked List"""
+def reverseList(self, head):
+    return self.helper(head, None)
+
+def helper(self, node, prev):
+    # point node.next to prev
+    if not node: # return the beginning of the linkedList
+        return prev
+    after = node.next
+    node.next = prev
+    return self.helper(after, node)
