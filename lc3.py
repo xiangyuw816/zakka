@@ -367,3 +367,30 @@ def addTwoNumbers(self, l1, l2):
         n = n.next
         
     return root.next
+
+
+"""155. Min Stack"""
+# when `push`, use (val, current_min) to update the stack
+class MinStack:
+    def __init__(self):
+        self.q = []
+
+    def push(self, x):
+        curMin = self.getMin()
+        if not curMin or x < curMin:
+            curMin = x
+        self.q.append((x, curMin));
+
+    def pop(self):
+        self.q.pop()
+
+    def top(self):
+        if not self.q:
+            return None
+        return self.q[-1][0]
+
+    def getMin(self):
+        if not self.q:
+            return None
+        return self.q[-1][1]
+        
