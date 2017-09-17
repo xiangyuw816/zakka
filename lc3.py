@@ -305,3 +305,43 @@ def maxSubArrayLen(self, nums, k):
         if acc-k in mp:
             ans = max(ans, i-mp[acc-k]) # sum(nums[acc-k+1, i]) = k
     return ans
+
+
+"""Largest Sum Contiguous Subarray"""
+# current_max: still possible when accu_sum >= 0
+## ? greedy: a local max and global max
+def maxSubArraySum(a,size):
+    max_so_far =a[0]
+    curr_max = a[0]
+     
+    for i in range(1,size):
+        curr_max = max(a[i], curr_max + a[i])
+        max_so_far = max(max_so_far,curr_max)
+         
+    return max_so_far
+
+"""450. Delete Node in a BST"""
+# use the smallest value in right sub-tree to replace the value to be deleted
+def deleteNode(root, key):
+    if not root:
+        return root
+    
+    if root.val > key:
+        root.left = deleteNode(root.left, key)
+    elif root.val < key:
+        root.right = deleteNode(root.right, key)
+    else: # found the node to be deleted
+        if not root.left: # if either sub-tree not exist, return the other subtree
+            return root.right
+        elif not root.right:
+            return root.left
+        root.val = get_min(root.right)
+        root.right = deleteNode(root.right, root.val)
+        
+def get_min(root):
+    # find the min in a tree i.e. left-most leaf
+    m = root.val
+    while root.left:
+        root = root.left
+        m = root.val
+    return m
