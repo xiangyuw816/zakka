@@ -11,7 +11,53 @@
 ## 7. traver the tree to get symbols encoding i.e. most common symbols are using less bits to encode
 
 """146. LRU Cache"""
+# hashmap to make get O(1) and double linked list to make put O(1)
+class Node:
+    def __init__(self, val, key):
+        self.val = val
+        self.key = key
+        self.prev = None
+        self.next = None
+        
+class LRUCache:
+    def __init__(self, capacity):
+        self.capacity = capacity
+        self.dic = dict()
+        self.prev = self.next = self
+        
+    def get(self, key):
+        if key in self.dic:
+            n = self.dic[key]
+            self._remove(n)
+            self._add(n)
+            return n.val
+        return -1
 
+    def put(self, key, value):
+        if key in self.dic:
+            self._remove(self.dic[key])
+        n = Node(key, value)
+        self._add(n)
+        self.dic[key] = n
+        if len(self.dic) > self.capacity:
+            n = self.next
+            self._remove(n)
+            del self.dic[n.key]
+
+    def _remove(self, node):
+        p = node.prev
+        n = node.next
+        p.next = n
+        n.prev = p
+
+    def _add(self, node):
+        p = self.prev
+        p.next = node
+        self.prev = node
+        node.prev = p
+        node.next = self
+        
+        
 """Toplogical sorting"""
 # Description: In Docker, building an image has dependencies. An image can only be built once its dependency is built
 (If the dependency is from outside, then the image can be built immediately). Sometimes, engineers make mistakes by 
