@@ -647,7 +647,7 @@ class DisjointSet(object):
     def find_set_util(self, node):
       """Path compression: make all non-root nodes point to root node directly"""
         parent = node.parent
-        if parent == node:
+        if not parent:
             return parent
 
         # along the way to find root, update the parent of all elements along the way to the root node.
