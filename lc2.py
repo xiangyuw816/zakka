@@ -973,6 +973,7 @@ class Solution:
                     q.append(neighbor)
         return result
 
+      
 """238. Product of Array Except Self"""      
 def productExceptSelf(nums):
     # times twice: 1st - times every element before and then times every element after
@@ -1009,6 +1010,7 @@ def solution(nums):
             i += 1
     return nums
 
+  
 """41. First Missing Positive"""  
 def swap(nums, i, j):
     temp = nums[i]
@@ -1032,6 +1034,7 @@ def firstMissingPositive(nums):
             return i + 1
     return n + 1
 
+  
 """151. Reverse Words in a String"""
 # reverse the whole string and then reverse each word  
 class solution:
@@ -1054,6 +1057,7 @@ class solution:
             s[start], s[end] = s[end], s[start]
             start += 1
             end -= 1
+            
             
 """227. Basic Calculator II"""
 def calculate(s):
@@ -1082,6 +1086,7 @@ def calculate(s):
             num = 0
     return sum(stack)
 
+  
 """Binary Tree Maximum Path Sum"""
 # two situations: 1. node.val + one side; 2. node.val + 2 sides
 class Solution(object):
@@ -1096,10 +1101,12 @@ class Solution(object):
                 r, rs = dfs(node.right)
                 r = max(r, 0)
             return node.val + max(l, r), max(node.val + l + r, ls, rs)
+          
         if root:
             return dfs(root)[1]
         return 0
 
+      
 """128. Longest Consecutive Sequence"""
 # keep track of the sequence length and store that in the boundary points of the sequence
 def longestConsecutive(nums):
