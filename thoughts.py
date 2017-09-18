@@ -28,3 +28,34 @@ def minCost(self, costs):
 # Rule: no more than two adjacent fence posts have the same color
 ## break into: if paint the same or paint diff
 ## same, dif = dif, (same+dif)*(k-1)
+
+
+"""55. Jump Game"""
+# iterate and update the max index that's reachable
+def canJump(self, A):
+    if not A:
+        return False
+
+    maxjump = 0 # at current index, the max jump we can make
+    for i in range(len(A)):
+        maxjump = max(maxjump-1,A[i]) # previous maxjump need to -1 because now we move forward one step
+        if maxjump==0:
+            break
+
+    return i==len(A)-1
+
+def jump(self, nums):
+    # to find the min step to reach the final index
+    # start, end as current range of reachable
+    # then update to the fastest index can be reached in 1 step
+    n, start, end, step = len(nums), 0, 0, 0
+    while end < n - 1:
+        step += 1
+        maxend = end + 1
+        for i in range(start, end + 1):
+            if i + nums[i] >= n - 1:
+                return step
+            maxend = max(maxend, i + nums[i])
+        start, end = end + 1, maxend
+        
+    return step
