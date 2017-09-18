@@ -3,6 +3,7 @@
 # Given word1 = “coding”, word2 = “practice”, return 3
 # iterate over words, every time when find an index match word1/word2, compare min(min, abs(i1-i2))
 
+
 """624. Maximum Distance in Arrays"""
 # Already sorted! distance defined as |a-b|
 # iterate over arrays: max_dist = max(max_dist, prev_array[0]-current_arry[-1], prev_array[-1]-current_arry[0]
@@ -12,3 +13,18 @@ def maxDistance(self, arrays):
         res = max(res, a[-1]-curMin, curMax-a[0])
         curMin, curMax = min(curMin, a[0]), max(curMax, a[-1])
     return res
+
+
+"""256. Paint House"""
+# only need to maintain one list of costs that painted in three colors respectively.
+def minCost(self, costs):
+    prev = [0] * 3
+    for now in costs:
+        prev = [now[i] + min(prev[:i] + prev[i+1:]) for i in range(3)]
+    return min(prev)
+
+
+"""276. Paint Fence"""
+# Rule: no more than two adjacent fence posts have the same color
+## break into: if paint the same or paint diff
+## same, dif = dif, (same+dif)*(k-1)
